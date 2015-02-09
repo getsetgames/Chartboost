@@ -13,7 +13,7 @@
 #endif
 
 void UChartboostFunctions::ShowInterstitial(EChartboost::Location Location) {
-	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EChartboostLocation"), true);
+	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EChartboost"), true);
 	if (!EnumPtr) return;
  
 	FString LocationString = EnumPtr->GetEnumName(Location);
