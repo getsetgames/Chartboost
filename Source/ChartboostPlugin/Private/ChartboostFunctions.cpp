@@ -12,7 +12,7 @@
 #import <AdSupport/AdSupport.h>
 #endif
 
-void UChartboostFunctions::ShowInterstitial(EChartboostLocation Location) {
+void UChartboostFunctions::ShowInterstitial(EChartboost::Location Location) {
 	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EChartboostLocation"), true);
 	if (!EnumPtr) return;
  

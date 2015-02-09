@@ -42,7 +42,7 @@ void FChartboostPlugin::StartupModule()
 	GConfig->GetString(TEXT("Chartboost"), TEXT("AppIDiOS"), AppIDString, GEngineIni);
 	GConfig->GetString(TEXT("Chartboost"), TEXT("AppSignatureiOS"), AppSignatureString, GEngineIni);
 	
-	if (!AppIdString.IsEmpty() && !AppSignatureString.IsEmpty()) {
+	if (!AppIDString.IsEmpty() && !AppSignatureString.IsEmpty()) {
 		[Chartboost startWithAppId:[NSString stringWithFString:AppIDString]
 					  appSignature:[NSString stringWithFString:AppSignatureString]
 						  delegate:CBDelegateSingleton];
