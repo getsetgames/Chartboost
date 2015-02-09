@@ -41,7 +41,7 @@ void FChartboostPlugin::StartupModule()
 {
 	const UChartboostSettings* DefaultSettings = GetDefault<UChartboostSettings>();
 
-	// initialize IOS
+	// initialize iOS
 #if PLATFORM_IOS
 	if (!DefaultSettings->AppIDiOS.IsEmpty() && !DefaultSettings->AppSignatureiOS.IsEmpty()) {
 		[Chartboost startWithAppId:[NSString stringWithFString:DefaultSettings->AppIDiOS]
