@@ -4,6 +4,12 @@
 //
 
 #include "ChartboostPluginPrivatePCH.h"
+#include "ChartboostSettings.h"
+#include "ISettingsModule.h"
+
+DEFINE_LOG_CATEGORY(LogChartboost);
+
+#define LOCTEXT_NAMESPACE "ChartboostPlugin"
 
 #if PLATFORM_IOS
 #import <Chartboost/Chartboost.h>
@@ -25,29 +31,35 @@ static CBDelegate *CBDelegateSingleton = [[CBDelegate alloc] init];
 
 class FChartboostPlugin : public IChartboostPlugin
 {
-	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 };
 
 IMPLEMENT_MODULE( FChartboostPlugin, ChartboostPlugin )
 
-static FString AppIDString( TEXT( "" ) );
-static FString AppSignatureString( TEXT( "" ) );
-
 void FChartboostPlugin::StartupModule()
 {
-	// This code will execute after your module is loaded into memory (but after global variables are initialized, of course.)
+	const UChartboostSettings* DefaultSettings = GetDefault<UChartboostSettings>();
+
+	// initialize IOS
 #if PLATFORM_IOS
-	GConfig->GetString(TEXT("Chartboost"), TEXT("AppIDiOS"), AppIDString, GEngineIni);
-	GConfig->GetString(TEXT("Chartboost"), TEXT("AppSignatureiOS"), AppSignatureString, GEngineIni);
-	
-	if (!AppIDString.IsEmpty() && !AppSignatureString.IsEmpty()) {
-		[Chartboost startWithAppId:[NSString stringWithFString:AppIDString]
-					  appSignature:[NSString stringWithFString:AppSignatureString]
+	if (!DefaultSettings->AppIDiOS.IsEmpty() && !DefaultSettings->AppSignatureiOS.IsEmpty()) {
+		[Chartboost startWithAppId:[NSString stringWithFString:DefaultSettings->AppIDiOS]
+					  appSignature:[NSString stringWithFString:DefaultSettings->AppSignatureiOS]
 						  delegate:CBDelegateSingleton];
 	}
 #endif
+	
+	
+	// register settings
+	if (ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings"))
+	{
+		SettingsModule->RegisterSettings("Project", "Plugins", "Chartboost",
+										 LOCTEXT("RuntimeSettingsName", "Chartboost"),
+										 LOCTEXT("RuntimeSettingsDescription", "Configure the Chartboost plugin"),
+										 GetMutableDefault<UChartboostSettings>()
+										 );
+	}
 }
 
 
@@ -57,4 +69,4 @@ void FChartboostPlugin::ShutdownModule()
 	// we call this function before unloading the module.
 }
 
-DEFINE_LOG_CATEGORY(LogChartboost);
+#undef LOCTEXT_NAMESPACE

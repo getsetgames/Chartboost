@@ -45,6 +45,13 @@ namespace UnrealBuildTool.Rules
 					// ... add any modules that your module loads dynamically here ...
 				}
 				);
+				
+			PrivateIncludePathModuleNames.AddRange(
+			new string[] {
+				"Settings"
+			}
+			);
+
 
 			if (Target.Platform == UnrealTargetPlatform.IOS) {
 				PublicAdditionalFrameworks.Add( 
