@@ -12,5 +12,6 @@ UChartboostSettings::UChartboostSettings(const FObjectInitializer& ObjectInitial
 , FirstSessionInterstitials(true)
 , MoreAppsLoadingView(false)
 , PrefetchVideoContent(true)
+, PauseForAgeGate(false)
 {
 }

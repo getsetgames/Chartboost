@@ -44,14 +44,15 @@ void FChartboostPlugin::StartupModule()
 	// initialize iOS
 #if PLATFORM_IOS
 	if (!DefaultSettings->AppIDiOS.IsEmpty() && !DefaultSettings->AppSignatureiOS.IsEmpty()) {
-		[Chartboost startWithAppId:[NSString stringWithFString:DefaultSettings->AppIDiOS]
-					  appSignature:[NSString stringWithFString:DefaultSettings->AppSignatureiOS]
+		[Chartboost startWithAppId:DefaultSettings->AppIDiOS.GetNSString()
+					  appSignature:DefaultSettings->AppSignatureiOS.GetNSString()
 						  delegate:CBDelegateSingleton];
 		
 		[Chartboost setAutoCacheAds:DefaultSettings->AutoCacheAds];
 		[Chartboost setShouldRequestInterstitialsInFirstSession:DefaultSettings->FirstSessionInterstitials];
 		[Chartboost setShouldDisplayLoadingViewForMoreApps:DefaultSettings->MoreAppsLoadingView];
 		[Chartboost setShouldPrefetchVideoContent:DefaultSettings->PrefetchVideoContent];
+		[Chartboost setShouldPauseClickForConfirmation:DefaultSettings->PauseForAgeGate];
 	}
 #endif
 	

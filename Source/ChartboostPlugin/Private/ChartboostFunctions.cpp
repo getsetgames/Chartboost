@@ -23,6 +23,34 @@ FString UChartboostFunctions::GetLocationString(EChartboost::Location Location) 
 	return LocationString;
 }
 
+bool UChartboostFunctions::ChartboostAdIsVisible() {
+#if PLATFORM_IOS
+	return [Chartboost isAnyViewVisible];
+#endif
+
+	return false;
+}
+
+void UChartboostFunctions::SetAgeGatePassed(bool pass) {
+#if PLATFORM_IOS
+	[Chartboost didPassAgeGate:pass];
+#endif
+}
+
+void UChartboostFunctions::SetCustomId(FString customId) {
+#if PLATFORM_IOS
+	[Chartboost setCustomId:customId.GetNSString()];
+#endif
+}
+
+FString UChartboostFunctions::GetCustomId() {
+#if PLATFORM_IOS
+	return FString([Chartboost getCustomId]);
+#endif
+	
+	return nullptr;
+}
+
 #pragma mark Interstitials
 
 bool UChartboostFunctions::HasInterstitial(EChartboost::Location Location) {
@@ -32,7 +60,7 @@ bool UChartboostFunctions::HasInterstitial(EChartboost::Location Location) {
 	}
 	
 #if PLATFORM_IOS
-	return [Chartboost hasInterstitial:[NSString stringWithFString:LocationString]];
+	return [Chartboost hasInterstitial:LocationString.GetNSString()];
 #endif
 	
 	return false;
@@ -40,23 +68,27 @@ bool UChartboostFunctions::HasInterstitial(EChartboost::Location Location) {
 
 void UChartboostFunctions::ShowInterstitial(EChartboost::Location Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
-	if (LocationString.IsEmpty()) return;
+	if (LocationString.IsEmpty()) {
+		return;
+	}
 	
 	UE_LOG(LogChartboost, Log, TEXT("Showing interstitial for location: %s"), *LocationString);
 	
 #if PLATFORM_IOS
-	[Chartboost showInterstitial:[NSString stringWithFString:LocationString]];
+	[Chartboost showInterstitial:LocationString.GetNSString()];
 #endif
 }
 
 void UChartboostFunctions::CacheInterstitial(EChartboost::Location Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
-	if (LocationString.IsEmpty()) return;
+	if (LocationString.IsEmpty()) {
+		return;
+	}
 	
 	UE_LOG(LogChartboost, Log, TEXT("Caching interstitial for location: %s"), *LocationString);
 	
 #if PLATFORM_IOS
-	[Chartboost cacheInterstitial:[NSString stringWithFString:LocationString]];
+	[Chartboost cacheInterstitial:LocationString.GetNSString()];
 #endif
 }
 
@@ -69,7 +101,7 @@ bool UChartboostFunctions::HasMoreApps(EChartboost::Location Location) {
 	}
 	
 #if PLATFORM_IOS
-	return [Chartboost hasMoreApps:[NSString stringWithFString:LocationString]];
+	return [Chartboost hasMoreApps:LocationString.GetNSString()];
 #endif
 	
 	return false;
@@ -82,18 +114,20 @@ void UChartboostFunctions::ShowMoreApps(EChartboost::Location Location) {
 	UE_LOG(LogChartboost, Log, TEXT("Showing more apps for location: %s"), *LocationString);
 	
 #if PLATFORM_IOS
-	[Chartboost showMoreApps:[NSString stringWithFString:LocationString]];
+	[Chartboost showMoreApps:LocationString.GetNSString()];
 #endif
 }
 
 void UChartboostFunctions::CacheMoreApps(EChartboost::Location Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
-	if (LocationString.IsEmpty()) return;
+	if (LocationString.IsEmpty()) {
+		return;
+	}
 	
 	UE_LOG(LogChartboost, Log, TEXT("Caching more apps for location: %s"), *LocationString);
 	
 #if PLATFORM_IOS
-	[Chartboost cacheMoreApps:[NSString stringWithFString:LocationString]];
+	[Chartboost cacheMoreApps:LocationString.GetNSString()];
 #endif
 }
 
@@ -106,7 +140,7 @@ bool UChartboostFunctions::HasRewardedVideo(EChartboost::Location Location) {
 	}
 	
 #if PLATFORM_IOS
-	return [Chartboost hasRewardedVideo:[NSString stringWithFString:LocationString]];
+	return [Chartboost hasRewardedVideo:LocationString.GetNSString()];
 #endif
 	
 	return false;
@@ -119,17 +153,19 @@ void UChartboostFunctions::ShowRewardedVideo(EChartboost::Location Location) {
 	UE_LOG(LogChartboost, Log, TEXT("Showing rewarded video for location: %s"), *LocationString);
 	
 #if PLATFORM_IOS
-	[Chartboost showRewardedVideo:[NSString stringWithFString:LocationString]];
+	[Chartboost showRewardedVideo:LocationString.GetNSString()];
 #endif
 }
 
 void UChartboostFunctions::CacheRewardedVideo(EChartboost::Location Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
-	if (LocationString.IsEmpty()) return;
+	if (LocationString.IsEmpty()) {
+		return;
+	}
 	
 	UE_LOG(LogChartboost, Log, TEXT("Caching rewarded video for location: %s"), *LocationString);
 	
 #if PLATFORM_IOS
-	[Chartboost cacheRewardedVideo:[NSString stringWithFString:LocationString]];
+	[Chartboost cacheRewardedVideo:LocationString.GetNSString()];
 #endif
 }

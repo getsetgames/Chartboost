@@ -10,23 +10,28 @@
 UCLASS(config = Engine, defaultconfig)
 class UChartboostSettings : public UObject
 {
-	GENERATED_UCLASS_BODY()
+	GENERATED_BODY()
 	
-public:	
+public:
+	UChartboostSettings(const FObjectInitializer& ObjectInitializer);
+	
 	// General
 	
 	UPROPERTY(Config, EditAnywhere, Category=General, meta=(DisplayName="Auto Cache Ads"))
-	bool AutoCacheAds = true;
+	bool AutoCacheAds;
 	
-	UPROPERTY(Config, EditAnywhere, Category=General, meta=(DisplayName="Should Request Interstitials in First Session"))
-	bool FirstSessionInterstitials = true;
+	UPROPERTY(Config, EditAnywhere, Category=General, meta=(DisplayName="Request Interstitials in First Session"))
+	bool FirstSessionInterstitials;
 	
-	UPROPERTY(Config, EditAnywhere, Category=General, meta=(DisplayName="Should Display Loading View for More Apps"))
-	bool MoreAppsLoadingView = false;
+	UPROPERTY(Config, EditAnywhere, Category=General, meta=(DisplayName="Display Loading View for More Apps"))
+	bool MoreAppsLoadingView;
 	
-	UPROPERTY(Config, EditAnywhere, Category=General, meta=(DisplayName="Should Prefetch Video Content"))
-	bool PrefetchVideoContent = true;
-
+	UPROPERTY(Config, EditAnywhere, Category=General, meta=(DisplayName="Prefetch Video Content"))
+	bool PrefetchVideoContent;
+	
+	UPROPERTY(Config, EditAnywhere, Category=General, meta=(DisplayName="Pause for Age Gate"))
+	bool PauseForAgeGate;
+	
 	// iOS
 	
 	UPROPERTY(Config, EditAnywhere, Category=iOS, meta=(DisplayName="App ID"))

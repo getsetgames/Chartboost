@@ -37,37 +37,49 @@ class UChartboostFunctions : public UObject {
 	GENERATED_BODY()
 	
 public:
+	UFUNCTION(BlueprintPure, meta = (Keywords = "chartboost ad advertising"), Category = "Chartboost")
+	static bool ChartboostAdIsVisible();
+	
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising"), Category = "Chartboost")
+	static void SetAgeGatePassed(bool pass);
+
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising"), Category = "Chartboost")
+	static void SetCustomId(FString customId);
+
+	UFUNCTION(BlueprintPure, meta = (Keywords = "chartboost ad advertising"), Category = "Chartboost")
+	static FString GetCustomId();
+
 	// interstitials
 	
-	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising intersitial"), Category = Chartboost)
+	UFUNCTION(BlueprintPure, meta = (Keywords = "chartboost ad advertising intersitial"), Category = "Chartboost|Interstitials")
 	static bool HasInterstitial(EChartboost::Location Location);
 
-	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising intersitial"), Category = Chartboost)
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising intersitial"), Category = "Chartboost|Interstitials")
 	static void ShowInterstitial(EChartboost::Location Location);
 
-	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising intersitial"), Category = Chartboost)
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising intersitial"), Category = "Chartboost|Interstitials")
 	static void CacheInterstitial(EChartboost::Location Location);
 
 	// more apps
 
-	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising intersitial"), Category = Chartboost)
+	UFUNCTION(BlueprintPure, meta = (Keywords = "chartboost ad advertising"), Category = "Chartboost|More Apps")
 	static bool HasMoreApps(EChartboost::Location Location);
 	
-	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising intersitial"), Category = Chartboost)
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising"), Category = "Chartboost|More Apps")
 	static void ShowMoreApps(EChartboost::Location Location);
 
-	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising intersitial"), Category = Chartboost)
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising"), Category = "Chartboost|More Apps")
 	static void CacheMoreApps(EChartboost::Location Location);
 
 	// rewarded video
 
-	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising intersitial"), Category = Chartboost)
+	UFUNCTION(BlueprintPure, meta = (Keywords = "chartboost ad advertising video"), Category = "Chartboost|Rewarded Video")
 	static bool HasRewardedVideo(EChartboost::Location Location);
 	
-	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising intersitial"), Category = Chartboost)
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising video"), Category = "Chartboost|Rewarded Video")
 	static void ShowRewardedVideo(EChartboost::Location Location);
 
-	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising intersitial"), Category = Chartboost)
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising video"), Category = "Chartboost|Rewarded Video")
 	static void CacheRewardedVideo(EChartboost::Location Location);
 
 private:
