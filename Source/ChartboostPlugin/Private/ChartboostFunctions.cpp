@@ -53,7 +53,7 @@ void UChartboostFunctions::CacheInterstitial(EChartboost::Location Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
 	if (LocationString.IsEmpty()) return;
 	
-	UE_LOG(LogChartboost, Log, TEXT("Showing interstitial for location: %s"), *LocationString);
+	UE_LOG(LogChartboost, Log, TEXT("Caching interstitial for location: %s"), *LocationString);
 	
 #if PLATFORM_IOS
 	[Chartboost cacheInterstitial:[NSString stringWithFString:LocationString]];
@@ -90,7 +90,7 @@ void UChartboostFunctions::CacheMoreApps(EChartboost::Location Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
 	if (LocationString.IsEmpty()) return;
 	
-	UE_LOG(LogChartboost, Log, TEXT("Showing more apps for location: %s"), *LocationString);
+	UE_LOG(LogChartboost, Log, TEXT("Caching more apps for location: %s"), *LocationString);
 	
 #if PLATFORM_IOS
 	[Chartboost cacheMoreApps:[NSString stringWithFString:LocationString]];
@@ -127,7 +127,7 @@ void UChartboostFunctions::CacheRewardedVideo(EChartboost::Location Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
 	if (LocationString.IsEmpty()) return;
 	
-	UE_LOG(LogChartboost, Log, TEXT("Showing rewarded video for location: %s"), *LocationString);
+	UE_LOG(LogChartboost, Log, TEXT("Caching rewarded video for location: %s"), *LocationString);
 	
 #if PLATFORM_IOS
 	[Chartboost cacheRewardedVideo:[NSString stringWithFString:LocationString]];
