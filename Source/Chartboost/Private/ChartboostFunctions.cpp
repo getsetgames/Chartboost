@@ -48,7 +48,7 @@ FString UChartboostFunctions::GetCustomId() {
 	return FString([Chartboost getCustomId]);
 #endif
 	
-	return nullptr;
+	return FString();
 }
 
 #pragma mark Interstitials
