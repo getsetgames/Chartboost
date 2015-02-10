@@ -51,8 +51,6 @@ FString UChartboostFunctions::GetCustomId() {
 	return FString();
 }
 
-#pragma mark Interstitials
-
 bool UChartboostFunctions::HasInterstitial(EChartboost::Location Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
 	if (LocationString.IsEmpty()) {
@@ -92,8 +90,6 @@ void UChartboostFunctions::CacheInterstitial(EChartboost::Location Location) {
 #endif
 }
 
-#pragma mark More Apps
-
 bool UChartboostFunctions::HasMoreApps(EChartboost::Location Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
 	if (LocationString.IsEmpty()) {
@@ -130,8 +126,6 @@ void UChartboostFunctions::CacheMoreApps(EChartboost::Location Location) {
 	[Chartboost cacheMoreApps:LocationString.GetNSString()];
 #endif
 }
-
-#pragma mark Rewarded Video
 
 bool UChartboostFunctions::HasRewardedVideo(EChartboost::Location Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
