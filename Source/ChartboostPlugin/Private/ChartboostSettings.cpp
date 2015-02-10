@@ -5,3 +5,12 @@
 
 #include "ChartboostPluginPrivatePCH.h"
 #include "ChartboostSettings.h"
+
+UChartboostSettings::UChartboostSettings(const FObjectInitializer& ObjectInitializer)
+: Super(ObjectInitializer)
+, AutoCacheAds(true)
+, FirstSessionInterstitials(true)
+, MoreAppsLoadingView(false)
+, PrefetchVideoContent(true)
+{
+}

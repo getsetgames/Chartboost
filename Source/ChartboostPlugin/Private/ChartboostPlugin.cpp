@@ -47,6 +47,11 @@ void FChartboostPlugin::StartupModule()
 		[Chartboost startWithAppId:[NSString stringWithFString:DefaultSettings->AppIDiOS]
 					  appSignature:[NSString stringWithFString:DefaultSettings->AppSignatureiOS]
 						  delegate:CBDelegateSingleton];
+		
+		[Chartboost setAutoCacheAds:DefaultSettings->AutoCacheAds];
+		[Chartboost setShouldRequestInterstitialsInFirstSession:DefaultSettings->FirstSessionInterstitials];
+		[Chartboost setShouldDisplayLoadingViewForMoreApps:DefaultSettings->MoreAppsLoadingView];
+		[Chartboost setShouldPrefetchVideoContent:DefaultSettings->PrefetchVideoContent];
 	}
 #endif
 	
