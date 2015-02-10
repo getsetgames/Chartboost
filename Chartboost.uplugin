@@ -14,7 +14,7 @@
 	"Modules" :
 	[
 		{
-			"Name" : "ChartboostPlugin",
+			"Name" : "Chartboost",
 			"Type" : "Runtime"
 		}
 	]

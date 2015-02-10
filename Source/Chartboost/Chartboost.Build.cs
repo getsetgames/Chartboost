@@ -5,9 +5,9 @@
 
 namespace UnrealBuildTool.Rules
 {
-	public class ChartboostPlugin : ModuleRules
+	public class Chartboost : ModuleRules
 	{
-		public ChartboostPlugin(TargetInfo Target)
+		public Chartboost(TargetInfo Target)
 		{
 			PublicIncludePaths.AddRange(
 				new string[] {
@@ -17,7 +17,7 @@ namespace UnrealBuildTool.Rules
 
 			PrivateIncludePaths.AddRange(
 				new string[] {
-					"Developer/ChartboostPlugin/Private",
+					"Developer/Chartboost/Private",
 					// ... add other private include paths required here ...
 				}
 				);

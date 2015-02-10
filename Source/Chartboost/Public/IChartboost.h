@@ -12,7 +12,7 @@
  * The public interface to this module.  In most cases, this interface is only public to sibling modules 
  * within this plugin.
  */
-class IChartboostPlugin : public IModuleInterface
+class IChartboost : public IModuleInterface
 {
 
 public:
@@ -23,9 +23,9 @@ public:
 	 *
 	 * @return Returns singleton instance, loading the module on demand if needed
 	 */
-	static inline IChartboostPlugin& Get()
+	static inline IChartboost& Get()
 	{
-		return FModuleManager::LoadModuleChecked< IChartboostPlugin >( "ChartboostPlugin" );
+		return FModuleManager::LoadModuleChecked< IChartboost >( "Chartboost" );
 	}
 
 	/**
@@ -35,7 +35,7 @@ public:
 	 */
 	static inline bool IsAvailable()
 	{
-		return FModuleManager::Get().IsModuleLoaded( "ChartboostPlugin" );
+		return FModuleManager::Get().IsModuleLoaded( "Chartboost" );
 	}
 };
 

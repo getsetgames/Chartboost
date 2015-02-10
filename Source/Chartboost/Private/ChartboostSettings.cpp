@@ -3,7 +3,7 @@
 //  Copyright (c) 2015 Get Set Games Inc. All rights reserved.
 //
 
-#include "ChartboostPluginPrivatePCH.h"
+#include "ChartboostPrivatePCH.h"
 #include "ChartboostSettings.h"
 
 UChartboostSettings::UChartboostSettings(const FObjectInitializer& ObjectInitializer)

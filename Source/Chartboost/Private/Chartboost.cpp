@@ -3,13 +3,13 @@
 //  Copyright (c) 2015 Get Set Games Inc. All rights reserved.
 //
 
-#include "ChartboostPluginPrivatePCH.h"
+#include "ChartboostPrivatePCH.h"
 #include "ChartboostSettings.h"
 #include "ISettingsModule.h"
 
 DEFINE_LOG_CATEGORY(LogChartboost);
 
-#define LOCTEXT_NAMESPACE "ChartboostPlugin"
+#define LOCTEXT_NAMESPACE "Chartboost"
 
 #if PLATFORM_IOS
 #import <Chartboost/Chartboost.h>
@@ -29,15 +29,15 @@ static CBDelegate *CBDelegateSingleton = [[CBDelegate alloc] init];
 
 #endif
 
-class FChartboostPlugin : public IChartboostPlugin
+class FChartboost : public IChartboost
 {
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 };
 
-IMPLEMENT_MODULE( FChartboostPlugin, ChartboostPlugin )
+IMPLEMENT_MODULE( FChartboost, Chartboost )
 
-void FChartboostPlugin::StartupModule()
+void FChartboost::StartupModule()
 {
 	const UChartboostSettings* DefaultSettings = GetDefault<UChartboostSettings>();
 
@@ -69,7 +69,7 @@ void FChartboostPlugin::StartupModule()
 }
 
 
-void FChartboostPlugin::ShutdownModule()
+void FChartboost::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
