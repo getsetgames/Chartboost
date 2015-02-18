@@ -27,25 +27,25 @@ class IChartboostInterface
 //	bool ShouldDisplayInterstitial(ChartboostLocation Location);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|Interstitials")
-	void DidDisplayInterstitial(ChartboostLocation Location);
+	void DidDisplayInterstitial(EChartboostLocation::Location Location);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|Interstitials")
-	void DidCacheInterstitial(ChartboostLocation Location);
+	void DidCacheInterstitial(EChartboostLocation::Location Location);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|Interstitials")
-	void DidFailToLoadInterstitial(ChartboostLocation Location, ChartboostLoadError LoadError);
+	void DidFailToLoadInterstitial(EChartboostLocation::Location Location, EChartboostLoadError::LoadError LoadError);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|Interstitials")
-	void DidFailToRecordClick(ChartboostLocation Location, ChartboostClickError ClickError);
+	void DidFailToRecordClick(EChartboostLocation::Location Location, EChartboostClickError::ClickError ClickError);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|Interstitials")
-	void DidDismissInterstitial(ChartboostLocation Location);
+	void DidDismissInterstitial(EChartboostLocation::Location Location);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|Interstitials")
-	void DidCloseInterstitial(ChartboostLocation Location);
+	void DidCloseInterstitial(EChartboostLocation::Location Location);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|Interstitials")
-	void DidClickInterstitial(ChartboostLocation Location);
+	void DidClickInterstitial(EChartboostLocation::Location Location);
 	
 	// more apps
 	
@@ -53,22 +53,22 @@ class IChartboostInterface
 //	bool ShouldDisplayMoreApps(ChartboostLocation Location);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|More Apps")
-	void DidDisplayMoreApps(ChartboostLocation Location);
+	void DidDisplayMoreApps(EChartboostLocation::Location Location);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|More Apps")
-	void DidCacheMoreApps(ChartboostLocation Location);
+	void DidCacheMoreApps(EChartboostLocation::Location Location);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|More Apps")
-	void DidDismissMoreApps(ChartboostLocation Location);
+	void DidDismissMoreApps(EChartboostLocation::Location Location);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|More Apps")
-	void DidCloseMoreApps(ChartboostLocation Location);
+	void DidCloseMoreApps(EChartboostLocation::Location Location);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|More Apps")
-	void DidClickMoreApps(ChartboostLocation Location);
+	void DidClickMoreApps(EChartboostLocation::Location Location);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|More Apps")
-	void DidFailToLoadMoreApps(ChartboostLocation Location, ChartboostLoadError LoadError);
+	void DidFailToLoadMoreApps(EChartboostLocation::Location Location, EChartboostLoadError::LoadError LoadError);
 	
 	// rewarded video
 	
@@ -79,28 +79,28 @@ class IChartboostInterface
 //	bool ShouldDisplayRewardedVideo(ChartboostLocation Location);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|Rewarded Video")
-	void DidDisplayRewardedVideo(ChartboostLocation Location);
+	void DidDisplayRewardedVideo(EChartboostLocation::Location Location);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|Rewarded Video")
-	void DidCacheRewardedVideo(ChartboostLocation Location);
+	void DidCacheRewardedVideo(EChartboostLocation::Location Location);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|Rewarded Video")
-	void DidFailToLoadRewardedVideo(ChartboostLocation Location, ChartboostLoadError LoadError);
+	void DidFailToLoadRewardedVideo(EChartboostLocation::Location Location, EChartboostLoadError::LoadError LoadError);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|Rewarded Video")
-	void DidDismissRewardedVideo(ChartboostLocation Location);
+	void DidDismissRewardedVideo(EChartboostLocation::Location Location);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|Rewarded Video")
-	void DidCloseRewardedVideo(ChartboostLocation Location);
+	void DidCloseRewardedVideo(EChartboostLocation::Location Location);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|Rewarded Video")
-	void DidClickRewardedVideo(ChartboostLocation Location);
+	void DidClickRewardedVideo(EChartboostLocation::Location Location);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|Rewarded Video")
-	void DidCompleteRewardedVideo(ChartboostLocation Location, ChartboostLoadError LoadError);
+	void DidCompleteRewardedVideo(EChartboostLocation::Location Location, EChartboostLoadError::LoadError LoadError);
 	
 	UFUNCTION(BlueprintImplementableEvent, Category="Chartboost|Rewarded Video")
-	void WillDisplayVideo(ChartboostLocation Location);
+	void WillDisplayVideo(EChartboostLocation::Location Location);
 	
 	// general
 	
