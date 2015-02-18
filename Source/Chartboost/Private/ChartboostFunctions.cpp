@@ -12,8 +12,8 @@
 #import <AdSupport/AdSupport.h>
 #endif
 
-FString UChartboostFunctions::GetLocationString(EChartboost::Location Location) {
-	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EChartboost"), true);
+FString UChartboostFunctions::GetLocationString(ChartboostLocation Location) {
+	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("ChartboostLocation"), true);
 	if (!EnumPtr) {
 		return TEXT("");
 	}
@@ -51,7 +51,7 @@ FString UChartboostFunctions::GetCustomId() {
 	return FString();
 }
 
-bool UChartboostFunctions::HasInterstitial(EChartboost::Location Location) {
+bool UChartboostFunctions::HasInterstitial(ChartboostLocation Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
 	if (LocationString.IsEmpty()) {
 		return false;
@@ -64,7 +64,7 @@ bool UChartboostFunctions::HasInterstitial(EChartboost::Location Location) {
 	return false;
 }
 
-void UChartboostFunctions::ShowInterstitial(EChartboost::Location Location) {
+void UChartboostFunctions::ShowInterstitial(ChartboostLocation Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
 	if (LocationString.IsEmpty()) {
 		return;
@@ -77,7 +77,7 @@ void UChartboostFunctions::ShowInterstitial(EChartboost::Location Location) {
 #endif
 }
 
-void UChartboostFunctions::CacheInterstitial(EChartboost::Location Location) {
+void UChartboostFunctions::CacheInterstitial(ChartboostLocation Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
 	if (LocationString.IsEmpty()) {
 		return;
@@ -90,7 +90,7 @@ void UChartboostFunctions::CacheInterstitial(EChartboost::Location Location) {
 #endif
 }
 
-bool UChartboostFunctions::HasMoreApps(EChartboost::Location Location) {
+bool UChartboostFunctions::HasMoreApps(ChartboostLocation Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
 	if (LocationString.IsEmpty()) {
 		return false;
@@ -103,7 +103,7 @@ bool UChartboostFunctions::HasMoreApps(EChartboost::Location Location) {
 	return false;
 }
 
-void UChartboostFunctions::ShowMoreApps(EChartboost::Location Location) {
+void UChartboostFunctions::ShowMoreApps(ChartboostLocation Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
 	if (LocationString.IsEmpty()) return;
 	
@@ -114,7 +114,7 @@ void UChartboostFunctions::ShowMoreApps(EChartboost::Location Location) {
 #endif
 }
 
-void UChartboostFunctions::CacheMoreApps(EChartboost::Location Location) {
+void UChartboostFunctions::CacheMoreApps(ChartboostLocation Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
 	if (LocationString.IsEmpty()) {
 		return;
@@ -127,7 +127,7 @@ void UChartboostFunctions::CacheMoreApps(EChartboost::Location Location) {
 #endif
 }
 
-bool UChartboostFunctions::HasRewardedVideo(EChartboost::Location Location) {
+bool UChartboostFunctions::HasRewardedVideo(ChartboostLocation Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
 	if (LocationString.IsEmpty()) {
 		return false;
@@ -140,7 +140,7 @@ bool UChartboostFunctions::HasRewardedVideo(EChartboost::Location Location) {
 	return false;
 }
 
-void UChartboostFunctions::ShowRewardedVideo(EChartboost::Location Location) {
+void UChartboostFunctions::ShowRewardedVideo(ChartboostLocation Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
 	if (LocationString.IsEmpty()) return;
 	
@@ -151,7 +151,7 @@ void UChartboostFunctions::ShowRewardedVideo(EChartboost::Location Location) {
 #endif
 }
 
-void UChartboostFunctions::CacheRewardedVideo(EChartboost::Location Location) {
+void UChartboostFunctions::CacheRewardedVideo(ChartboostLocation Location) {
 	FString LocationString = UChartboostFunctions::GetLocationString(Location);
 	if (LocationString.IsEmpty()) {
 		return;

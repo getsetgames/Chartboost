@@ -8,29 +8,50 @@
 #include "ChartboostFunctions.generated.h"
 
 UENUM(BlueprintType)
-namespace EChartboost
+enum ChartboostLocation
 {
-	enum Location
-	{
-		CBLocationStartup		UMETA(DisplayName="Startup"),
-		CBLocationHomeScreen	UMETA(DisplayName="Home Screen"),
-		CBLocationMainMenu		UMETA(DisplayName="Main Menu"),
-		CBLocationGameScreen	UMETA(DisplayName="Game Screen"),
-		CBLocationAchievements	UMETA(DisplayName="Achievements"),
-		CBLocationQuests		UMETA(DisplayName="Quests"),
-		CBLocationPause			UMETA(DisplayName="Pause"),
-		CBLocationLevelStart	UMETA(DisplayName="Level Start"),
-		CBLocationLevelComplete	UMETA(DisplayName="Level Complete"),
-		CBLocationTurnComplete	UMETA(DisplayName="Turn Complete"),
-		CBLocationIAPStore		UMETA(DisplayName="IAP Store"),
-		CBLocationItemStore		UMETA(DisplayName="Item Store"),
-		CBLocationGameOver		UMETA(DisplayName="Game Over"),
-		CBLocationLeaderBoard	UMETA(DisplayName="LeaderBoard"),
-		CBLocationSettings		UMETA(DisplayName="Settings"),
-		CBLocationQuit			UMETA(DisplayName="Quit"),
-		CBLocationDefault		UMETA(DisplayName="Default")
-	};	
-}
+	CBLocationStartup		UMETA(DisplayName="Startup"),
+	CBLocationHomeScreen	UMETA(DisplayName="Home Screen"),
+	CBLocationMainMenu		UMETA(DisplayName="Main Menu"),
+	CBLocationGameScreen	UMETA(DisplayName="Game Screen"),
+	CBLocationAchievements	UMETA(DisplayName="Achievements"),
+	CBLocationQuests		UMETA(DisplayName="Quests"),
+	CBLocationPause			UMETA(DisplayName="Pause"),
+	CBLocationLevelStart	UMETA(DisplayName="Level Start"),
+	CBLocationLevelComplete	UMETA(DisplayName="Level Complete"),
+	CBLocationTurnComplete	UMETA(DisplayName="Turn Complete"),
+	CBLocationIAPStore		UMETA(DisplayName="IAP Store"),
+	CBLocationItemStore		UMETA(DisplayName="Item Store"),
+	CBLocationGameOver		UMETA(DisplayName="Game Over"),
+	CBLocationLeaderBoard	UMETA(DisplayName="LeaderBoard"),
+	CBLocationSettings		UMETA(DisplayName="Settings"),
+	CBLocationQuit			UMETA(DisplayName="Quit"),
+	CBLocationDefault		UMETA(DisplayName="Default")
+};
+
+UENUM(BlueprintType)
+enum ChartboostLoadError
+{
+	CBLoadErrorInternal								UMETA(DisplayName="Internal"),
+	CBLoadErrorInternetUnavailable					UMETA(DisplayName="Internet Unavailable"),
+	CBLoadErrorTooManyConnections					UMETA(DisplayName="Too Many Connections"),
+	CBLoadErrorWrongOrientation						UMETA(DisplayName="Wrong Orientation"),
+	CBLoadErrorFirstSessionInterstitialsDisabled	UMETA(DisplayName="First Session Interstitials Disabled"),
+	CBLoadErrorNetworkFailure						UMETA(DisplayName="Network Failure"),
+	CBLoadErrorNoAdFound							UMETA(DisplayName="No Ad Found"),
+	CBLoadErrorSessionNotStarted					UMETA(DisplayName="Session Not Started"),
+	CBLoadErrorUserCancellation						UMETA(DisplayName="User Cancellation"),
+	CBLoadErrorNoLocationFound						UMETA(DisplayName="No Location Found"),
+};
+
+UENUM(BlueprintType)
+enum ChartboostClickError
+{
+	CBClickErrorUriInvalid		UMETA(DisplayName="Uri Invalid"),
+	CBClickErrorUriUnrecognized	UMETA(DisplayName="Uri Unrecognized"),
+	CBClickErrorAgeGateFailure	UMETA(DisplayName="Age Gate Failure"),
+	CBClickErrorInternal		UMETA(DisplayName="Internal"),
+};
 
 UCLASS(NotBlueprintable)
 class UChartboostFunctions : public UObject {
@@ -52,36 +73,36 @@ public:
 	// interstitials
 	
 	UFUNCTION(BlueprintPure, meta = (Keywords = "chartboost ad advertising intersitial"), Category = "Chartboost|Interstitials")
-	static bool HasInterstitial(EChartboost::Location Location);
+	static bool HasInterstitial(ChartboostLocation Location);
 
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising intersitial"), Category = "Chartboost|Interstitials")
-	static void ShowInterstitial(EChartboost::Location Location);
+	static void ShowInterstitial(ChartboostLocation Location);
 
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising intersitial"), Category = "Chartboost|Interstitials")
-	static void CacheInterstitial(EChartboost::Location Location);
+	static void CacheInterstitial(ChartboostLocation Location);
 
 	// more apps
 
 	UFUNCTION(BlueprintPure, meta = (Keywords = "chartboost ad advertising"), Category = "Chartboost|More Apps")
-	static bool HasMoreApps(EChartboost::Location Location);
+	static bool HasMoreApps(ChartboostLocation Location);
 	
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising"), Category = "Chartboost|More Apps")
-	static void ShowMoreApps(EChartboost::Location Location);
+	static void ShowMoreApps(ChartboostLocation Location);
 
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising"), Category = "Chartboost|More Apps")
-	static void CacheMoreApps(EChartboost::Location Location);
+	static void CacheMoreApps(ChartboostLocation Location);
 
 	// rewarded video
 
 	UFUNCTION(BlueprintPure, meta = (Keywords = "chartboost ad advertising video"), Category = "Chartboost|Rewarded Video")
-	static bool HasRewardedVideo(EChartboost::Location Location);
+	static bool HasRewardedVideo(ChartboostLocation Location);
 	
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising video"), Category = "Chartboost|Rewarded Video")
-	static void ShowRewardedVideo(EChartboost::Location Location);
+	static void ShowRewardedVideo(ChartboostLocation Location);
 
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising video"), Category = "Chartboost|Rewarded Video")
-	static void CacheRewardedVideo(EChartboost::Location Location);
+	static void CacheRewardedVideo(ChartboostLocation Location);
 
 private:
-	static FString GetLocationString(EChartboost::Location Location);
+	static FString GetLocationString(ChartboostLocation Location);
 };
