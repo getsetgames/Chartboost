@@ -7,7 +7,6 @@
 
 #include "ChartboostInterface.generated.h"
 
-/** Interface for assets which contain gameplay tags */
 UINTERFACE(Blueprintable)
 class UChartboostInterface : public UInterface
 {
