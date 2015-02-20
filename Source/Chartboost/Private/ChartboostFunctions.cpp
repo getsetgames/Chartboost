@@ -23,6 +23,21 @@ FString UChartboostFunctions::GetLocationString(EChartboostLocation::Location Lo
 	return LocationString;
 }
 
+EChartboostLocation::Location UChartboostFunctions::GetLocationFromString(FString Location) {
+	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EChartboostLocation"), true);
+	if (!EnumPtr) {
+		return EChartboostLocation::Location::CBLocationDefault;
+	}
+	
+	int32 Index = EnumPtr->FindEnumIndex(FName(*Location));
+	
+	if (Index == INDEX_NONE) {
+		return EChartboostLocation::Location::CBLocationDefault;
+	}
+	
+	return (EChartboostLocation::Location)Index;
+}
+
 bool UChartboostFunctions::ChartboostAdIsVisible() {
 #if PLATFORM_IOS
 	return [Chartboost isAnyViewVisible];

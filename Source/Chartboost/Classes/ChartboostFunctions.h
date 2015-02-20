@@ -109,6 +109,6 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising video"), Category = "Chartboost|Rewarded Video")
 	static void CacheRewardedVideo(EChartboostLocation::Location Location);
 
-private:
 	static FString GetLocationString(EChartboostLocation::Location Location);
+	static EChartboostLocation::Location GetLocationFromString(FString Location);
 };

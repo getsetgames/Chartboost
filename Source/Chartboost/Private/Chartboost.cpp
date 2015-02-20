@@ -17,11 +17,115 @@ DEFINE_LOG_CATEGORY(LogChartboost);
 #import <CommonCrypto/CommonDigest.h>
 #import <AdSupport/AdSupport.h>
 
+#define CHARTBOOST_LOCATION(LOC) UChartboostFunctions::GetLocationFromString(FString(LOC))
+
 @interface CBDelegate : NSObject <ChartboostDelegate>
 
 @end
 
 @implementation CBDelegate
+
+// interstitials
+
+- (void)didDisplayInterstitial:(CBLocation)location {
+	UChartboostComponent::DidDisplayInterstitialDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+}
+
+- (void)didCacheInterstitial:(CBLocation)location {
+	UChartboostComponent::DidCacheInterstitialDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+}
+
+- (void)didFailToLoadInterstitial:(CBLocation)location withError:(CBLoadError)error {
+	UChartboostComponent::DidFailToLoadInterstitialDelegate.Broadcast(CHARTBOOST_LOCATION(location), (EChartboostLoadError::LoadError)error);
+}
+
+- (void)didFailToRecordClick:(CBLocation)location withError:(CBClickError)error {
+	UChartboostComponent::DidFailToRecordClickDelegate.Broadcast(CHARTBOOST_LOCATION(location), (EChartboostClickError::ClickError)error);
+}
+
+- (void)didDismissInterstitial:(CBLocation)location {
+	UChartboostComponent::DidDismissInterstitialDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+}
+
+- (void)didCloseInterstitial:(CBLocation)location {
+	UChartboostComponent::DidCloseInterstitialDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+}
+
+- (void)didClickInterstitial:(CBLocation)location {
+	UChartboostComponent::DidClickInterstitialDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+}
+
+// more apps
+
+- (void)didDisplayMoreApps:(CBLocation)location {
+	UChartboostComponent::DidDisplayMoreAppsDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+}
+
+- (void)didCacheMoreApps:(CBLocation)location {
+	UChartboostComponent::DidCacheMoreAppsDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+}
+
+- (void)didDismissMoreApps:(CBLocation)location {
+	UChartboostComponent::DidDismissMoreAppsDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+}
+
+- (void)didCloseMoreApps:(CBLocation)location {
+	UChartboostComponent::DidCloseMoreAppsDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+}
+
+- (void)didClickMoreApps:(CBLocation)location {
+	UChartboostComponent::DidClickMoreAppsDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+}
+
+- (void)didFailToLoadMoreApps:(CBLocation)location withError:(CBLoadError)error {
+	UChartboostComponent::DidFailToLoadMoreAppsDelegate.Broadcast(CHARTBOOST_LOCATION(location), (EChartboostLoadError::LoadError)error);
+}
+
+// rewarded videos
+
+- (void)didPrefetchVideos {
+	UChartboostComponent::DidPrefetchVideosDelegate.Broadcast();
+}
+
+- (void)didDisplayRewardedVideo:(CBLocation)location {
+	UChartboostComponent::DidDisplayRewardedVideoDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+}
+
+- (void)didCacheRewardedVideo:(CBLocation)location {
+	UChartboostComponent::DidCacheRewardedVideoDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+}
+
+- (void)didFailToLoadRewardedVideo:(CBLocation)location withError:(CBLoadError)error {
+	UChartboostComponent::DidFailToLoadRewardedVideoDelegate.Broadcast(CHARTBOOST_LOCATION(location), (EChartboostLoadError::LoadError)error);
+}
+
+- (void)didDismissRewardedVideo:(CBLocation)location {
+	UChartboostComponent::DidDismissRewardedVideoDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+}
+
+- (void)didCloseRewardedVideo:(CBLocation)location {
+	UChartboostComponent::DidCloseRewardedVideoDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+}
+
+- (void)didClickRewardedVideo:(CBLocation)location {
+	UChartboostComponent::DidClickRewardedVideoDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+}
+
+- (void)didCompleteRewardedVideo:(CBLocation)location withReward:(int)reward {
+	UChartboostComponent::DidCompleteRewardedVideoDelegate.Broadcast(CHARTBOOST_LOCATION(location), reward);
+}
+
+- (void)willDisplayVideo:(CBLocation)location {
+	UChartboostComponent::WillDisplayVideoDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+}
+
+- (void)didCompleteAppStoreSheetFlow {
+	UChartboostComponent::DidCompleteAppStoreSheetFlowDelegate.Broadcast();
+}
+
+- (void)didPauseClickForConfirmation {
+	UChartboostComponent::DidPauseClickForConfirmationDelegate.Broadcast();
+}
 
 @end
 
