@@ -8,6 +8,13 @@
 #include "CoreUObject.h"
 #include "Engine.h"
 
+#if PLATFORM_IOS
+#import <Chartboost/Chartboost.h>
+#import <Chartboost/CBNewsfeed.h>
+#import <CommonCrypto/CommonDigest.h>
+#import <AdSupport/AdSupport.h>
+#endif
+
 #include "IChartboost.h"
 
 #include "ChartboostClasses.h"

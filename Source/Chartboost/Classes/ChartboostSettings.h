@@ -30,13 +30,5 @@ public:
 	bool PrefetchVideoContent;
 	
 	UPROPERTY(Config, EditAnywhere, Category=General, meta=(DisplayName="Pause for Age Gate"))
-	bool PauseForAgeGate;
-	
-	// iOS
-	
-	UPROPERTY(Config, EditAnywhere, Category=iOS, meta=(DisplayName="App ID"))
-	FString AppIDiOS;
-
-	UPROPERTY(Config, EditAnywhere, Category=iOS, meta=(DisplayName="App Signature"))
-	FString AppSignatureiOS;
+	bool PauseForAgeGate;	
 };
