@@ -21,6 +21,7 @@ namespace EChartboostLoadError {
 		CBLoadErrorSessionNotStarted					UMETA(DisplayName="Session Not Started"),
 		CBLoadErrorUserCancellation						UMETA(DisplayName="User Cancellation"),
 		CBLoadErrorNoLocationFound						UMETA(DisplayName="No Location Found"),
+		CBLoadErrorPrefetchingIncomplete				UMETA(DisplayName="Prefetching Incomplete")
 	};
 }
 
