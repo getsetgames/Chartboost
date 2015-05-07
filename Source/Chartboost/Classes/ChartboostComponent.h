@@ -15,10 +15,10 @@ class UChartboostComponent : public UActorComponent
 	
 public:
 	DECLARE_MULTICAST_DELEGATE(FChartboostDelegate);
-	DECLARE_MULTICAST_DELEGATE_OneParam(FChartboostLocationDelegate, EChartboostLocation::Location);
-	DECLARE_MULTICAST_DELEGATE_TwoParams(FChartboostLocationLoadErrorDelegate, EChartboostLocation::Location, EChartboostLoadError::LoadError);
-	DECLARE_MULTICAST_DELEGATE_TwoParams(FChartboostLocationRewardDelegate, EChartboostLocation::Location, int32);
-	DECLARE_MULTICAST_DELEGATE_TwoParams(FChartboostLocationClickErrorDelegate, EChartboostLocation::Location, EChartboostClickError::ClickError);
+	DECLARE_MULTICAST_DELEGATE_OneParam(FChartboostLocationDelegate, FString);
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FChartboostLocationLoadErrorDelegate, FString, EChartboostLoadError::LoadError);
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FChartboostLocationRewardDelegate, FString, int32);
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FChartboostLocationClickErrorDelegate, FString, EChartboostClickError::ClickError);
 	
 	// interstitials
 	
@@ -57,10 +57,10 @@ public:
 	static FChartboostDelegate DidPauseClickForConfirmationDelegate;
 	
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FChartboostDynDelegate);
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChartboostLocationDynDelegate, EChartboostLocation::Location, Location);
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FChartboostLocationLoadErrorDynDelegate, EChartboostLocation::Location, Location, EChartboostLoadError::LoadError, LoadError);
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FChartboostLocationClickErrorDynDelegate, EChartboostLocation::Location, Location, EChartboostClickError::ClickError, ClickError);
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FChartboostLocationRewardDynDelegate, EChartboostLocation::Location, Location, int32, Reward);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FChartboostLocationDynDelegate, FString, Location);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FChartboostLocationLoadErrorDynDelegate, FString, Location, EChartboostLoadError::LoadError, LoadError);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FChartboostLocationClickErrorDynDelegate, FString, Location, EChartboostClickError::ClickError, ClickError);
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FChartboostLocationRewardDynDelegate, FString, Location, int32, Reward);
 	
 	// interstitials
 	
@@ -148,34 +148,34 @@ public:
 private:	
 	// interstitials
 
-	void DidDisplayInterstitial_Handler(EChartboostLocation::Location Location) { DidDisplayInterstitial.Broadcast(Location); }
-	void DidCacheInterstitial_Handler(EChartboostLocation::Location Location) { DidCacheInterstitial.Broadcast(Location); }
-	void DidFailToLoadInterstitial_Handler(EChartboostLocation::Location Location, EChartboostLoadError::LoadError LoadError) { DidFailToLoadInterstitial.Broadcast(Location, LoadError); }
-	void DidFailToRecordClick_Handler(EChartboostLocation::Location Location, EChartboostClickError::ClickError ClickError) { DidFailToRecordClick.Broadcast(Location, ClickError); }
-	void DidDismissInterstitial_Handler(EChartboostLocation::Location Location) { DidDismissInterstitial.Broadcast(Location); }
-	void DidCloseInterstitial_Handler(EChartboostLocation::Location Location) { DidCloseInterstitial.Broadcast(Location); }
-	void DidClickInterstitial_Handler(EChartboostLocation::Location Location) { DidClickInterstitial.Broadcast(Location); }
+	void DidDisplayInterstitial_Handler(FString Location) { DidDisplayInterstitial.Broadcast(Location); }
+	void DidCacheInterstitial_Handler(FString Location) { DidCacheInterstitial.Broadcast(Location); }
+	void DidFailToLoadInterstitial_Handler(FString Location, EChartboostLoadError::LoadError LoadError) { DidFailToLoadInterstitial.Broadcast(Location, LoadError); }
+	void DidFailToRecordClick_Handler(FString Location, EChartboostClickError::ClickError ClickError) { DidFailToRecordClick.Broadcast(Location, ClickError); }
+	void DidDismissInterstitial_Handler(FString Location) { DidDismissInterstitial.Broadcast(Location); }
+	void DidCloseInterstitial_Handler(FString Location) { DidCloseInterstitial.Broadcast(Location); }
+	void DidClickInterstitial_Handler(FString Location) { DidClickInterstitial.Broadcast(Location); }
 	
 	//  more apps
 	
-	void DidDisplayMoreApps_Handler(EChartboostLocation::Location Location) { DidDisplayMoreApps.Broadcast(Location); }
-	void DidCacheMoreApps_Handler(EChartboostLocation::Location Location) { DidCacheMoreApps.Broadcast(Location); }
-	void DidDismissMoreApps_Handler(EChartboostLocation::Location Location) { DidDismissMoreApps.Broadcast(Location); }
-	void DidCloseMoreApps_Handler(EChartboostLocation::Location Location) { DidCloseMoreApps.Broadcast(Location); }
-	void DidClickMoreApps_Handler(EChartboostLocation::Location Location) { DidClickMoreApps.Broadcast(Location); }
-	void DidFailToLoadMoreApps_Handler(EChartboostLocation::Location Location, EChartboostLoadError::LoadError LoadError) { DidFailToLoadMoreApps.Broadcast(Location, LoadError); }
+	void DidDisplayMoreApps_Handler(FString Location) { DidDisplayMoreApps.Broadcast(Location); }
+	void DidCacheMoreApps_Handler(FString Location) { DidCacheMoreApps.Broadcast(Location); }
+	void DidDismissMoreApps_Handler(FString Location) { DidDismissMoreApps.Broadcast(Location); }
+	void DidCloseMoreApps_Handler(FString Location) { DidCloseMoreApps.Broadcast(Location); }
+	void DidClickMoreApps_Handler(FString Location) { DidClickMoreApps.Broadcast(Location); }
+	void DidFailToLoadMoreApps_Handler(FString Location, EChartboostLoadError::LoadError LoadError) { DidFailToLoadMoreApps.Broadcast(Location, LoadError); }
 	
 	// rewarded videos
 	
 	void DidPrefetchVideos_Handler() { DidPrefetchVideos.Broadcast(); }
-	void DidDisplayRewardedVideo_Handler(EChartboostLocation::Location Location) { DidDisplayRewardedVideo.Broadcast(Location); }
-	void DidCacheRewardedVideo_Handler(EChartboostLocation::Location Location) { DidCacheRewardedVideo.Broadcast(Location); }
-	void DidFailToLoadRewardedVideo_Handler(EChartboostLocation::Location Location, EChartboostLoadError::LoadError LoadError) { DidFailToLoadRewardedVideo.Broadcast(Location, LoadError); }
-	void DidDismissRewardedVideo_Handler(EChartboostLocation::Location Location) { DidDismissRewardedVideo.Broadcast(Location); }
-	void DidCloseRewardedVideo_Handler(EChartboostLocation::Location Location) { DidCloseRewardedVideo.Broadcast(Location); }
-	void DidClickRewardedVideo_Handler(EChartboostLocation::Location Location) { DidClickRewardedVideo.Broadcast(Location); }
-	void DidCompleteRewardedVideo_Handler(EChartboostLocation::Location Location, int Reward) { DidCompleteRewardedVideo.Broadcast(Location, Reward); }
-	void WillDisplayVideo_Handler(EChartboostLocation::Location Location) { WillDisplayVideo.Broadcast(Location); }
+	void DidDisplayRewardedVideo_Handler(FString Location) { DidDisplayRewardedVideo.Broadcast(Location); }
+	void DidCacheRewardedVideo_Handler(FString Location) { DidCacheRewardedVideo.Broadcast(Location); }
+	void DidFailToLoadRewardedVideo_Handler(FString Location, EChartboostLoadError::LoadError LoadError) { DidFailToLoadRewardedVideo.Broadcast(Location, LoadError); }
+	void DidDismissRewardedVideo_Handler(FString Location) { DidDismissRewardedVideo.Broadcast(Location); }
+	void DidCloseRewardedVideo_Handler(FString Location) { DidCloseRewardedVideo.Broadcast(Location); }
+	void DidClickRewardedVideo_Handler(FString Location) { DidClickRewardedVideo.Broadcast(Location); }
+	void DidCompleteRewardedVideo_Handler(FString Location, int Reward) { DidCompleteRewardedVideo.Broadcast(Location, Reward); }
+	void WillDisplayVideo_Handler(FString Location) { WillDisplayVideo.Broadcast(Location); }
 	
 	// general
 

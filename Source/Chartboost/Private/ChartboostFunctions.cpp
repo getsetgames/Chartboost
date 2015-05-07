@@ -7,8 +7,6 @@
 
 #if PLATFORM_IOS
 
-#define CHARTBOOST_LOCATION(LOC) UChartboostFunctions::GetLocationFromString(FString(LOC))
-
 @interface CBDelegate : NSObject <ChartboostDelegate>
 
 @end
@@ -16,32 +14,6 @@
 static CBDelegate *CBDelegateSingleton = [[CBDelegate alloc] init];
 
 #endif
-
-FString UChartboostFunctions::GetLocationString(EChartboostLocation::Location Location) {
-	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EChartboostLocation"), true);
-	if (!EnumPtr) {
-		return TEXT("");
-	}
- 
-	FString LocationString = EnumPtr->GetEnumName(Location);
-	
-	return LocationString;
-}
-
-EChartboostLocation::Location UChartboostFunctions::GetLocationFromString(FString Location) {
-	const UEnum* EnumPtr = FindObject<UEnum>(ANY_PACKAGE, TEXT("EChartboostLocation"), true);
-	if (!EnumPtr) {
-		return EChartboostLocation::Location::CBLocationDefault;
-	}
-	
-	int32 Index = EnumPtr->FindEnumIndex(FName(*Location));
-	
-	if (Index == INDEX_NONE) {
-		return EChartboostLocation::Location::CBLocationDefault;
-	}
-	
-	return (EChartboostLocation::Location)Index;
-}
 
 void UChartboostFunctions::ChartboostStart(FString AppId, FString AppSignature)
 {
@@ -93,127 +65,121 @@ FString UChartboostFunctions::ChartboostGetCustomId() {
 	return FString();
 }
 
-bool UChartboostFunctions::ChartboostHasInterstitial(EChartboostLocation::Location Location) {
-	FString LocationString = UChartboostFunctions::GetLocationString(Location);
-	if (LocationString.IsEmpty()) {
+bool UChartboostFunctions::ChartboostHasInterstitial(FString Location) {
+	if (Location.IsEmpty()) {
 		return false;
 	}
 	
 #if PLATFORM_IOS
-	return [Chartboost hasInterstitial:LocationString.GetNSString()];
+	return [Chartboost hasInterstitial:Location.GetNSString()];
 #endif
 	
 	return false;
 }
 
-void UChartboostFunctions::ChartboostShowInterstitial(EChartboostLocation::Location Location) {
-	FString LocationString = UChartboostFunctions::GetLocationString(Location);
-	if (LocationString.IsEmpty()) {
+void UChartboostFunctions::ChartboostShowInterstitial(FString Location) {
+	if (Location.IsEmpty()) {
 		return;
 	}
 	
-	UE_LOG(LogChartboost, Log, TEXT("Showing interstitial for location: %s"), *LocationString);
+	UE_LOG(LogChartboost, Log, TEXT("Showing interstitial for location: %s"), *Location);
 	
 #if PLATFORM_IOS
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[Chartboost showInterstitial:LocationString.GetNSString()];
+		[Chartboost showInterstitial:Location.GetNSString()];
 	});
 #endif
 }
 
-void UChartboostFunctions::ChartboostCacheInterstitial(EChartboostLocation::Location Location) {
-	FString LocationString = UChartboostFunctions::GetLocationString(Location);
-	if (LocationString.IsEmpty()) {
+void UChartboostFunctions::ChartboostCacheInterstitial(FString Location) {
+	if (Location.IsEmpty()) {
 		return;
 	}
 	
-	UE_LOG(LogChartboost, Log, TEXT("Caching interstitial for location: %s"), *LocationString);
+	UE_LOG(LogChartboost, Log, TEXT("Caching interstitial for location: %s"), *Location);
 	
 #if PLATFORM_IOS
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[Chartboost cacheInterstitial:LocationString.GetNSString()];
+		[Chartboost cacheInterstitial:Location.GetNSString()];
 	});
 #endif
 }
 
-bool UChartboostFunctions::ChartboostHasMoreApps(EChartboostLocation::Location Location) {
-	FString LocationString = UChartboostFunctions::GetLocationString(Location);
-	if (LocationString.IsEmpty()) {
+bool UChartboostFunctions::ChartboostHasMoreApps(FString Location) {
+	if (Location.IsEmpty()) {
 		return false;
 	}
 	
 #if PLATFORM_IOS
-	return [Chartboost hasMoreApps:LocationString.GetNSString()];
+	return [Chartboost hasMoreApps:Location.GetNSString()];
 #endif
 	
 	return false;
 }
 
-void UChartboostFunctions::ChartboostShowMoreApps(EChartboostLocation::Location Location) {
-	FString LocationString = UChartboostFunctions::GetLocationString(Location);
-	if (LocationString.IsEmpty()) return;
-	
-	UE_LOG(LogChartboost, Log, TEXT("Showing more apps for location: %s"), *LocationString);
-	
-#if PLATFORM_IOS
-	dispatch_async(dispatch_get_main_queue(), ^{
-		[Chartboost showMoreApps:LocationString.GetNSString()];
-	});
-#endif
-}
-
-void UChartboostFunctions::ChartboostCacheMoreApps(EChartboostLocation::Location Location) {
-	FString LocationString = UChartboostFunctions::GetLocationString(Location);
-	if (LocationString.IsEmpty()) {
+void UChartboostFunctions::ChartboostShowMoreApps(FString Location) {
+	if (Location.IsEmpty())
+	{
 		return;
 	}
 	
-	UE_LOG(LogChartboost, Log, TEXT("Caching more apps for location: %s"), *LocationString);
+	UE_LOG(LogChartboost, Log, TEXT("Showing more apps for location: %s"), *Location);
 	
 #if PLATFORM_IOS
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[Chartboost cacheMoreApps:LocationString.GetNSString()];
+		[Chartboost showMoreApps:Location.GetNSString()];
 	});
 #endif
 }
 
-bool UChartboostFunctions::ChartboostHasRewardedVideo(EChartboostLocation::Location Location) {
-	FString LocationString = UChartboostFunctions::GetLocationString(Location);
-	if (LocationString.IsEmpty()) {
+void UChartboostFunctions::ChartboostCacheMoreApps(FString Location) {
+	if (Location.IsEmpty()) {
+		return;
+	}
+	
+	UE_LOG(LogChartboost, Log, TEXT("Caching more apps for location: %s"), *Location);
+	
+#if PLATFORM_IOS
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[Chartboost cacheMoreApps:Location.GetNSString()];
+	});
+#endif
+}
+
+bool UChartboostFunctions::ChartboostHasRewardedVideo(FString Location) {
+	if (Location.IsEmpty()) {
 		return false;
 	}
 	
 #if PLATFORM_IOS
-	return [Chartboost hasRewardedVideo:LocationString.GetNSString()];
+	return [Chartboost hasRewardedVideo:Location.GetNSString()];
 #endif
 	
 	return false;
 }
 
-void UChartboostFunctions::ChartboostShowRewardedVideo(EChartboostLocation::Location Location) {
-	FString LocationString = UChartboostFunctions::GetLocationString(Location);
-	if (LocationString.IsEmpty()) return;
+void UChartboostFunctions::ChartboostShowRewardedVideo(FString Location) {
+	if (Location.IsEmpty()) return;
 	
-	UE_LOG(LogChartboost, Log, TEXT("Showing rewarded video for location: %s"), *LocationString);
+	UE_LOG(LogChartboost, Log, TEXT("Showing rewarded video for location: %s"), *Location);
 	
 #if PLATFORM_IOS
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[Chartboost showRewardedVideo:LocationString.GetNSString()];
+		[Chartboost showRewardedVideo:Location.GetNSString()];
 	});
 #endif
 }
 
-void UChartboostFunctions::ChartboostCacheRewardedVideo(EChartboostLocation::Location Location) {
-	FString LocationString = UChartboostFunctions::GetLocationString(Location);
-	if (LocationString.IsEmpty()) {
+void UChartboostFunctions::ChartboostCacheRewardedVideo(FString Location) {
+	if (Location.IsEmpty()) {
 		return;
 	}
 	
-	UE_LOG(LogChartboost, Log, TEXT("Caching rewarded video for location: %s"), *LocationString);
+	UE_LOG(LogChartboost, Log, TEXT("Caching rewarded video for location: %s"), *Location);
 	
 #if PLATFORM_IOS
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[Chartboost cacheRewardedVideo:LocationString.GetNSString()];
+		[Chartboost cacheRewardedVideo:Location.GetNSString()];
 	});
 #endif
 }
@@ -224,57 +190,57 @@ void UChartboostFunctions::ChartboostCacheRewardedVideo(EChartboostLocation::Loc
 // interstitials
 
 - (void)didDisplayInterstitial:(CBLocation)location {
-	UChartboostComponent::DidDisplayInterstitialDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+	UChartboostComponent::DidDisplayInterstitialDelegate.Broadcast(FString(location));
 }
 
 - (void)didCacheInterstitial:(CBLocation)location {
-	UChartboostComponent::DidCacheInterstitialDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+	UChartboostComponent::DidCacheInterstitialDelegate.Broadcast(FString(location));
 }
 
 - (void)didFailToLoadInterstitial:(CBLocation)location withError:(CBLoadError)error {
-	UChartboostComponent::DidFailToLoadInterstitialDelegate.Broadcast(CHARTBOOST_LOCATION(location), (EChartboostLoadError::LoadError)error);
+	UChartboostComponent::DidFailToLoadInterstitialDelegate.Broadcast(FString(location), (EChartboostLoadError::LoadError)error);
 }
 
 - (void)didFailToRecordClick:(CBLocation)location withError:(CBClickError)error {
-	UChartboostComponent::DidFailToRecordClickDelegate.Broadcast(CHARTBOOST_LOCATION(location), (EChartboostClickError::ClickError)error);
+	UChartboostComponent::DidFailToRecordClickDelegate.Broadcast(FString(location), (EChartboostClickError::ClickError)error);
 }
 
 - (void)didDismissInterstitial:(CBLocation)location {
-	UChartboostComponent::DidDismissInterstitialDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+	UChartboostComponent::DidDismissInterstitialDelegate.Broadcast(FString(location));
 }
 
 - (void)didCloseInterstitial:(CBLocation)location {
-	UChartboostComponent::DidCloseInterstitialDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+	UChartboostComponent::DidCloseInterstitialDelegate.Broadcast(FString(location));
 }
 
 - (void)didClickInterstitial:(CBLocation)location {
-	UChartboostComponent::DidClickInterstitialDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+	UChartboostComponent::DidClickInterstitialDelegate.Broadcast(FString(location));
 }
 
 // more apps
 
 - (void)didDisplayMoreApps:(CBLocation)location {
-	UChartboostComponent::DidDisplayMoreAppsDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+	UChartboostComponent::DidDisplayMoreAppsDelegate.Broadcast(FString(location));
 }
 
 - (void)didCacheMoreApps:(CBLocation)location {
-	UChartboostComponent::DidCacheMoreAppsDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+	UChartboostComponent::DidCacheMoreAppsDelegate.Broadcast(FString(location));
 }
 
 - (void)didDismissMoreApps:(CBLocation)location {
-	UChartboostComponent::DidDismissMoreAppsDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+	UChartboostComponent::DidDismissMoreAppsDelegate.Broadcast(FString(location));
 }
 
 - (void)didCloseMoreApps:(CBLocation)location {
-	UChartboostComponent::DidCloseMoreAppsDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+	UChartboostComponent::DidCloseMoreAppsDelegate.Broadcast(FString(location));
 }
 
 - (void)didClickMoreApps:(CBLocation)location {
-	UChartboostComponent::DidClickMoreAppsDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+	UChartboostComponent::DidClickMoreAppsDelegate.Broadcast(FString(location));
 }
 
 - (void)didFailToLoadMoreApps:(CBLocation)location withError:(CBLoadError)error {
-	UChartboostComponent::DidFailToLoadMoreAppsDelegate.Broadcast(CHARTBOOST_LOCATION(location), (EChartboostLoadError::LoadError)error);
+	UChartboostComponent::DidFailToLoadMoreAppsDelegate.Broadcast(FString(location), (EChartboostLoadError::LoadError)error);
 }
 
 // rewarded videos
@@ -284,35 +250,35 @@ void UChartboostFunctions::ChartboostCacheRewardedVideo(EChartboostLocation::Loc
 }
 
 - (void)didDisplayRewardedVideo:(CBLocation)location {
-	UChartboostComponent::DidDisplayRewardedVideoDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+	UChartboostComponent::DidDisplayRewardedVideoDelegate.Broadcast(FString(location));
 }
 
 - (void)didCacheRewardedVideo:(CBLocation)location {
-	UChartboostComponent::DidCacheRewardedVideoDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+	UChartboostComponent::DidCacheRewardedVideoDelegate.Broadcast(FString(location));
 }
 
 - (void)didFailToLoadRewardedVideo:(CBLocation)location withError:(CBLoadError)error {
-	UChartboostComponent::DidFailToLoadRewardedVideoDelegate.Broadcast(CHARTBOOST_LOCATION(location), (EChartboostLoadError::LoadError)error);
+	UChartboostComponent::DidFailToLoadRewardedVideoDelegate.Broadcast(FString(location), (EChartboostLoadError::LoadError)error);
 }
 
 - (void)didDismissRewardedVideo:(CBLocation)location {
-	UChartboostComponent::DidDismissRewardedVideoDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+	UChartboostComponent::DidDismissRewardedVideoDelegate.Broadcast(FString(location));
 }
 
 - (void)didCloseRewardedVideo:(CBLocation)location {
-	UChartboostComponent::DidCloseRewardedVideoDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+	UChartboostComponent::DidCloseRewardedVideoDelegate.Broadcast(FString(location));
 }
 
 - (void)didClickRewardedVideo:(CBLocation)location {
-	UChartboostComponent::DidClickRewardedVideoDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+	UChartboostComponent::DidClickRewardedVideoDelegate.Broadcast(FString(location));
 }
 
 - (void)didCompleteRewardedVideo:(CBLocation)location withReward:(int)reward {
-	UChartboostComponent::DidCompleteRewardedVideoDelegate.Broadcast(CHARTBOOST_LOCATION(location), reward);
+	UChartboostComponent::DidCompleteRewardedVideoDelegate.Broadcast(FString(location), reward);
 }
 
 - (void)willDisplayVideo:(CBLocation)location {
-	UChartboostComponent::WillDisplayVideoDelegate.Broadcast(CHARTBOOST_LOCATION(location));
+	UChartboostComponent::WillDisplayVideoDelegate.Broadcast(FString(location));
 }
 
 - (void)didCompleteAppStoreSheetFlow {
