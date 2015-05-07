@@ -50,15 +50,17 @@ void UChartboostFunctions::ChartboostStart(FString AppId, FString AppSignature)
 	// initialize iOS
 #if PLATFORM_IOS
 	if (!AppId.IsEmpty() && !AppSignature.IsEmpty()) {
-		[Chartboost startWithAppId:AppId.GetNSString()
-					  appSignature:AppSignature.GetNSString()
-						  delegate:CBDelegateSingleton];
-		
-		[Chartboost setAutoCacheAds:DefaultSettings->AutoCacheAds];
-		[Chartboost setShouldRequestInterstitialsInFirstSession:DefaultSettings->FirstSessionInterstitials];
-		[Chartboost setShouldDisplayLoadingViewForMoreApps:DefaultSettings->MoreAppsLoadingView];
-		[Chartboost setShouldPrefetchVideoContent:DefaultSettings->PrefetchVideoContent];
-		[Chartboost setShouldPauseClickForConfirmation:DefaultSettings->PauseForAgeGate];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[Chartboost startWithAppId:AppId.GetNSString()
+						  appSignature:AppSignature.GetNSString()
+							  delegate:CBDelegateSingleton];
+			
+			[Chartboost setAutoCacheAds:DefaultSettings->AutoCacheAds];
+			[Chartboost setShouldRequestInterstitialsInFirstSession:DefaultSettings->FirstSessionInterstitials];
+			[Chartboost setShouldDisplayLoadingViewForMoreApps:DefaultSettings->MoreAppsLoadingView];
+			[Chartboost setShouldPrefetchVideoContent:DefaultSettings->PrefetchVideoContent];
+			[Chartboost setShouldPauseClickForConfirmation:DefaultSettings->PauseForAgeGate];
+		});
 	}
 #endif
 }
@@ -113,7 +115,9 @@ void UChartboostFunctions::ChartboostShowInterstitial(EChartboostLocation::Locat
 	UE_LOG(LogChartboost, Log, TEXT("Showing interstitial for location: %s"), *LocationString);
 	
 #if PLATFORM_IOS
-	[Chartboost showInterstitial:LocationString.GetNSString()];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[Chartboost showInterstitial:LocationString.GetNSString()];
+	});
 #endif
 }
 
@@ -126,7 +130,9 @@ void UChartboostFunctions::ChartboostCacheInterstitial(EChartboostLocation::Loca
 	UE_LOG(LogChartboost, Log, TEXT("Caching interstitial for location: %s"), *LocationString);
 	
 #if PLATFORM_IOS
-	[Chartboost cacheInterstitial:LocationString.GetNSString()];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[Chartboost cacheInterstitial:LocationString.GetNSString()];
+	});
 #endif
 }
 
@@ -150,7 +156,9 @@ void UChartboostFunctions::ChartboostShowMoreApps(EChartboostLocation::Location 
 	UE_LOG(LogChartboost, Log, TEXT("Showing more apps for location: %s"), *LocationString);
 	
 #if PLATFORM_IOS
-	[Chartboost showMoreApps:LocationString.GetNSString()];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[Chartboost showMoreApps:LocationString.GetNSString()];
+	});
 #endif
 }
 
@@ -163,7 +171,9 @@ void UChartboostFunctions::ChartboostCacheMoreApps(EChartboostLocation::Location
 	UE_LOG(LogChartboost, Log, TEXT("Caching more apps for location: %s"), *LocationString);
 	
 #if PLATFORM_IOS
-	[Chartboost cacheMoreApps:LocationString.GetNSString()];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[Chartboost cacheMoreApps:LocationString.GetNSString()];
+	});
 #endif
 }
 
@@ -187,7 +197,9 @@ void UChartboostFunctions::ChartboostShowRewardedVideo(EChartboostLocation::Loca
 	UE_LOG(LogChartboost, Log, TEXT("Showing rewarded video for location: %s"), *LocationString);
 	
 #if PLATFORM_IOS
-	[Chartboost showRewardedVideo:LocationString.GetNSString()];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[Chartboost showRewardedVideo:LocationString.GetNSString()];
+	});
 #endif
 }
 
@@ -200,7 +212,9 @@ void UChartboostFunctions::ChartboostCacheRewardedVideo(EChartboostLocation::Loc
 	UE_LOG(LogChartboost, Log, TEXT("Caching rewarded video for location: %s"), *LocationString);
 	
 #if PLATFORM_IOS
-	[Chartboost cacheRewardedVideo:LocationString.GetNSString()];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[Chartboost cacheRewardedVideo:LocationString.GetNSString()];
+	});
 #endif
 }
 
