@@ -1,21 +1,23 @@
 {
-	"FileVersion" : 3,
-	
-	"FriendlyName" : "Chartboost",
-	"Version" : 1,
-	"VersionName" : "1.0",
-	"CreatedBy" : "Get Set Games Inc.",
-	"CreatedByURL" : "https://github.com/getsetgames/Chartboost",
-	"EngineVersion" : "4.6.0",
-	"Description" : "This plugin serves interstitial ads via Chartboost.",
-	"Category" : "Advertising",
-	"EnabledByDefault" : false,
-	
-	"Modules" :
-	[
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Chartboost",
+	"Description": "This plugin serves interstitial ads via Chartboost.",
+	"Category": "Advertising",
+	"CreatedBy": "Get Set Games Inc.",
+	"CreatedByURL": "http://getsetgames.com",
+	"DocsURL": "https://github.com/getsetgames/Chartboost",
+	"MarketplaceURL": "",
+	"Modules": [
 		{
-			"Name" : "Chartboost",
-			"Type" : "Runtime"
+			"Name": "Chartboost",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
 		}
-	]
+	],
+	"EnabledByDefault": false,
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"Installed": false
 }
