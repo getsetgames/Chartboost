@@ -38,7 +38,7 @@ Ensure that the plugin is enabled:
 
 ### Add the Chartboost Start Function
 
-Add the `Chartboost Start` blueprint function somewhere early in your game's execution. We use it in our Game Instance's Init event. You could also use it in the Application Lifecycle component's Foreground event or in your first scene's Begin Play event. The key here is to run this function before any other Chartboost function.
+Add the `Chartboost Start` blueprint function early in your game's execution. We use it in our Game Instance's Init event. You could also use it in the Application Lifecycle component's Foreground event or in your first scene's Begin Play event. The key here is to run this function before any other Chartboost function.
 
 ![ChartboostStart](Resources/ChartboostStart.png)
 
@@ -50,7 +50,7 @@ You can cache ads using the Chartboost Cache functions, like so:
 
 ## Showing Ads
 
-You can check if an interstitial ad is cached and ready to show by using the `Chartboost Has Interstiital` function. If one is available, you can show it using the `Chartboost Show Interstitial` function. If you run the Show function without checking using the Has function first, an interstitial will display when it is available.
+You can check if an interstitial ad is cached and ready to show by using the `Chartboost Has Interstiital` function. If one is available, you can show it using the `Chartboost Show Interstitial` function. If you run the Show function without first using the Has function, an interstitial will display when it is available.
 
 ![HasInterstitialShowInterstitial](Resources/HasInterstitialShowInterstitial.png)
 
@@ -60,7 +60,7 @@ Similarly, you can check if a rewarded video is available using the `Chartboost 
 
 ## Responding to Events
 
-You can respond to the delegate callbacks that the Chartboost SDK sends by adding the Chartboost component to an actor in your scene.
+You can respond to the callbacks that the Chartboost SDK sends by adding the Chartboost component to an actor in your scene.
 
 ![AddComponent](Resources/AddComponent.png)
 
