@@ -82,7 +82,10 @@ void UChartboostFunctions::ChartboostShowInterstitial(FString Location) {
 		return;
 	}
 	
+#if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
 	UE_LOG(LogChartboost, Log, TEXT("Showing interstitial for location: %s"), *Location);
+#endif
+
 	
 #if PLATFORM_IOS
 	dispatch_async(dispatch_get_main_queue(), ^{
@@ -96,7 +99,9 @@ void UChartboostFunctions::ChartboostCacheInterstitial(FString Location) {
 		return;
 	}
 	
+#if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
 	UE_LOG(LogChartboost, Log, TEXT("Caching interstitial for location: %s"), *Location);
+#endif
 	
 #if PLATFORM_IOS
 	dispatch_async(dispatch_get_main_queue(), ^{
@@ -123,7 +128,9 @@ void UChartboostFunctions::ChartboostShowMoreApps(FString Location) {
 		return;
 	}
 	
+#if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
 	UE_LOG(LogChartboost, Log, TEXT("Showing more apps for location: %s"), *Location);
+#endif
 	
 #if PLATFORM_IOS
 	dispatch_async(dispatch_get_main_queue(), ^{
@@ -137,7 +144,9 @@ void UChartboostFunctions::ChartboostCacheMoreApps(FString Location) {
 		return;
 	}
 	
+#if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
 	UE_LOG(LogChartboost, Log, TEXT("Caching more apps for location: %s"), *Location);
+#endif
 	
 #if PLATFORM_IOS
 	dispatch_async(dispatch_get_main_queue(), ^{
@@ -161,7 +170,9 @@ bool UChartboostFunctions::ChartboostHasRewardedVideo(FString Location) {
 void UChartboostFunctions::ChartboostShowRewardedVideo(FString Location) {
 	if (Location.IsEmpty()) return;
 	
+#if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
 	UE_LOG(LogChartboost, Log, TEXT("Showing rewarded video for location: %s"), *Location);
+#endif
 	
 #if PLATFORM_IOS
 	dispatch_async(dispatch_get_main_queue(), ^{
@@ -175,7 +186,9 @@ void UChartboostFunctions::ChartboostCacheRewardedVideo(FString Location) {
 		return;
 	}
 	
+#if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
 	UE_LOG(LogChartboost, Log, TEXT("Caching rewarded video for location: %s"), *Location);
+#endif
 	
 #if PLATFORM_IOS
 	dispatch_async(dispatch_get_main_queue(), ^{
