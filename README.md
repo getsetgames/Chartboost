@@ -2,7 +2,7 @@
 A plugin for Unreal Engine 4 that integrates Chartboost's SDK and makes its functionality available in blueprints.
 
 - Supported platforms: iOS
-- iOS SDK Version: 5.4.0
+- iOS SDK Version: 5.5.0
 
 ## Setup
 
