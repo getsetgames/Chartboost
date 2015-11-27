@@ -5,7 +5,13 @@
 
 #include "ChartboostPrivatePCH.h"
 
-#if PLATFORM_IOS
+#if PLATFORM_ANDROID
+
+
+#include "Android/AndroidJNI.h"
+#include "AndroidApplication.h"
+
+#elif PLATFORM_IOS
 
 @interface CBDelegate : NSObject <ChartboostDelegate>
 
@@ -21,19 +27,31 @@ void UChartboostFunctions::ChartboostStart(FString AppId, FString AppSignature)
 	
 	// initialize iOS
 #if PLATFORM_IOS
-	if (!AppId.IsEmpty() && !AppSignature.IsEmpty()) {
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[Chartboost startWithAppId:AppId.GetNSString()
-						  appSignature:AppSignature.GetNSString()
-							  delegate:CBDelegateSingleton];
-			
-			[Chartboost setAutoCacheAds:DefaultSettings->AutoCacheAds];
-			[Chartboost setShouldRequestInterstitialsInFirstSession:DefaultSettings->FirstSessionInterstitials];
-			[Chartboost setShouldDisplayLoadingViewForMoreApps:DefaultSettings->MoreAppsLoadingView];
-			[Chartboost setShouldPrefetchVideoContent:DefaultSettings->PrefetchVideoContent];
-			[Chartboost setShouldPauseClickForConfirmation:DefaultSettings->PauseForAgeGate];
-		});
-	}
+	
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [Chartboost startWithAppId:AppId.GetNSString()
+                      appSignature:AppSignature.GetNSString()
+                          delegate:CBDelegateSingleton];
+        
+        [Chartboost setAutoCacheAds:DefaultSettings->AutoCacheAds];
+        [Chartboost setShouldRequestInterstitialsInFirstSession:DefaultSettings->FirstSessionInterstitials];
+        [Chartboost setShouldDisplayLoadingViewForMoreApps:DefaultSettings->MoreAppsLoadingView];
+        [Chartboost setShouldPrefetchVideoContent:DefaultSettings->PrefetchVideoContent];
+        [Chartboost setShouldPauseClickForConfirmation:DefaultSettings->PauseForAgeGate];
+    });
+	
+#elif PLATFORM_ANDROID
+    if (JNIEnv* env = FAndroidApplication::GetJavaEnv(true))
+    {
+        static jmethodID Method = FJavaWrapper::FindMethod(env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_Chartboost_startWithAppID", "()Z", false);
+        
+        //FJavaWrapper::CallVoidMethod(env, AppId,Method);
+        UE_LOG(LogAndroid, Warning, TEXT("I found the java method startWithAppID\n"))
+    }
+    else
+    {
+        UE_LOG(LogAndroid, Warning, TEXT("ERROR Could note get Java ENV\n"));
+    }
 #endif
 }
 
