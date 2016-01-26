@@ -166,22 +166,22 @@
 				Chartboost.setDelegate(cbDelegate);
 			}
 
-			public void AndroidThunkJava_Chartboost_CacheInterstitial()
+			public void AndroidThunkJava_Chartboost_CacheInterstitial(String location)
 			{
 				Chartboost.cacheInterstitial(CBLocation.LOCATION_DEFAULT);
 			}
 
-			public void AndroidThunkJava_Chartboost_ShowInterstitial()
+			public void AndroidThunkJava_Chartboost_ShowInterstitial(String location)
 			{
 				Chartboost.showInterstitial(CBLocation.LOCATION_DEFAULT);
 			}
 
-			public void AndroidThunkJava_Chartboost_CacheRewardedVideo()
+			public void AndroidThunkJava_Chartboost_CacheRewardedVideo(String location)
 			{
 				Chartboost.cacheRewardedVideo(CBLocation.LOCATION_DEFAULT);
 			}
 
-			public void AndroidThunkJava_Chartboost_ShowRewardedVideo()
+			public void AndroidThunkJava_Chartboost_ShowRewardedVideo(String location)
 			{
 				Chartboost.showRewardedVideo(CBLocation.LOCATION_DEFAULT);
 			}
