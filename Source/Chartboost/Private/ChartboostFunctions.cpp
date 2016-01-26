@@ -7,9 +7,39 @@
 
 #if PLATFORM_ANDROID
 
-
 #include "Android/AndroidJNI.h"
 #include "AndroidApplication.h"
+
+void AndroidThunkJava_Chartboost_StartWithAppID(FString &appID, FString &appSignature)
+{
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_Chartboost_StartWithAppID", "()Ljava/lang/String;Ljava/lang/String;", false);
+		
+		FJavaWrapper::CallObjectMethod(Env, FJavaWrapper::GameActivityThis, Method);
+	}
+}
+
+void AndroidThunkJava_Chartboost_CacheInterstitial()
+{
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_Chartboost_CacheInterstitial", "()Ljava/lang/String;", false);
+		
+		FJavaWrapper::CallObjectMethod(Env, FJavaWrapper::GameActivityThis, Method);
+	}
+}
+
+void AndroidThunkJava_Chartboost_ShowInterstitial()
+{
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_Chartboost_ShowInterstitial", "()Ljava/lang/String;", false);
+		
+		FJavaWrapper::CallObjectMethod(Env, FJavaWrapper::GameActivityThis, Method);
+	}
+}
+
 
 #elif PLATFORM_IOS
 
