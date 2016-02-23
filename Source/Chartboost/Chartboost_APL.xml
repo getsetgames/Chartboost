@@ -97,27 +97,28 @@
 			// a given CBLocation. You can then do things like mute effects and sounds.
 			@Override
 			public void willDisplayVideo(String location) {
+				Log.debug("willDisplayVideo");
 				nativeCbWillDisplayVideo(location);
 			}
 			
 			// Called after a rewarded video has been closed.
 			@Override
 			public void didCloseRewardedVideo(String location) {
+				Log.debug("didCloseRewardedVideo");
 				nativeCbDidCloseRewardedVideo(location);
 			}
 			
 			// Called after a rewarded video has been viewed completely and user is eligible for reward.
 			@Override
 			public void didCompleteRewardedVideo(String location, int reward) {
+				Log.debug("didCompleteRewardedVideo");
 				nativeCbDidCompleteRewardedVideo(location, reward);
 			}
 		};
 		
 		public void AndroidThunkJava_Chartboost_StartWithAppID(String appId, String appSignature)
-		{
-			Chartboost.startWithAppId(this, appId, appSignature);
-			Chartboost.setDelegate(cbDelegate);
-			Chartboost.onCreate(this);
+		{	
+			Log.debug( "AndroidThunkJava_Chartboost_StartWithAppID( " + appId + " " + appSignature + " )" );
 		}
 
 		public void AndroidThunkJava_Chartboost_CacheInterstitial(String location)
@@ -142,6 +143,7 @@
 		
 		public boolean AndroidThunkJava_Chartboost_HasRewardedVideo(String location)
 		{
+			Log.debug( "AndroidThunkJava_Chartboost_HasRewardedVideo: " + Chartboost.hasRewardedVideo(CBLocation.LOCATION_DEFAULT) + " )" );			
 			return Chartboost.hasRewardedVideo(CBLocation.LOCATION_DEFAULT);
 		}
 		</insert>
@@ -149,13 +151,20 @@
 	
 	<!-- optional additions to GameActivity onCreate metadata reading in GameActivity.java -->
 	<gameActivityReadMetadataAdditions>
-<!-- 		<if condition="bSupported">
-			<true>
-				<insert>
-			
-				</insert>
-			</true>
-		</if> -->
+		<insert>		
+			if (bundle.containsKey("com.epicgames.ue4.ChartBoost.AppId") &amp;&amp; bundle.containsKey("com.epicgames.ue4.ChartBoost.AppSignature")) {
+				String appId = bundle.getString("com.epicgames.ue4.ChartBoost.AppId");
+				String appSignature = bundle.getString("com.epicgames.ue4.ChartBoost.AppSignature");
+				
+				Log.debug("Chartboost.startWithAppId(\"" + appId + "\", \"" + appSignature + "\")");
+				
+				Chartboost.startWithAppId(this, appId, appSignature);
+				Chartboost.setDelegate(cbDelegate);
+				Chartboost.onCreate(this);
+			} else {
+				Log.debug("Missing Chartboost App ID and/or App Signature on \"Extra settings for &lt;application&gt;\" in your project's Android settings. Example:\n &lt;meta-data android:name=\"com.epicgames.ue4.ChartBoost.AppId\" android:value=\"Your App Id\" /&gt;\\n&lt;meta-data android:name=\"com.epicgames.ue4.ChartBoost.AppSignature\" android:value=\"Your App Signature\" /&gt;");
+			}
+		</insert>
 	</gameActivityReadMetadataAdditions>
 	
 	<!-- optional additions to GameActivity onCreate in GameActivity.java -->
