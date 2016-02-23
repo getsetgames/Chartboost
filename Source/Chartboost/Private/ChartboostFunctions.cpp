@@ -10,34 +10,90 @@
 #include "Android/AndroidJNI.h"
 #include "AndroidApplication.h"
 
-void AndroidThunkJava_Chartboost_StartWithAppID(FString &appID, FString &appSignature)
-{
-	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-	{
-		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_Chartboost_StartWithAppID", "()Ljava/lang/String;Ljava/lang/String;", false);
-		
-		FJavaWrapper::CallObjectMethod(Env, FJavaWrapper::GameActivityThis, Method);
-	}
+#define INIT_JAVA_METHOD(name, signature) \
+if (JNIEnv* Env = FAndroidApplication::GetJavaEnv(true)) { \
+	name = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, #name, signature, false); \
+	check(name != NULL); \
+} else { \
+	check(0); \
 }
 
-void AndroidThunkJava_Chartboost_CacheInterstitial()
+#define DECLARE_JAVA_METHOD(name) \
+static jmethodID name = NULL;
+
+DECLARE_JAVA_METHOD(AndroidThunkJava_Chartboost_StartWithAppID);
+DECLARE_JAVA_METHOD(AndroidThunkJava_Chartboost_HasRewardedVideo);
+DECLARE_JAVA_METHOD(AndroidThunkJava_Chartboost_ShowRewardedVideo);
+DECLARE_JAVA_METHOD(AndroidThunkJava_Chartboost_CacheRewardedVideo);
+
+void UChartboostFunctions::InitJavaFunctions()
 {
-	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-	{
-		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_Chartboost_CacheInterstitial", "()Ljava/lang/String;", false);
-		
-		FJavaWrapper::CallObjectMethod(Env, FJavaWrapper::GameActivityThis, Method);
-	}
+	INIT_JAVA_METHOD(AndroidThunkJava_Chartboost_StartWithAppID, "(Ljava/lang/String;Ljava/lang/String;)V");
+	INIT_JAVA_METHOD(AndroidThunkJava_Chartboost_HasRewardedVideo, "(Ljava/lang/String;)Z");
+	INIT_JAVA_METHOD(AndroidThunkJava_Chartboost_ShowRewardedVideo, "(Ljava/lang/String;)V");
+	INIT_JAVA_METHOD(AndroidThunkJava_Chartboost_CacheRewardedVideo, "(Ljava/lang/String;)V");
+}
+#undef DECLARE_JAVA_METHOD
+#undef INIT_JAVA_METHOD
+
+//This function is declared in the Java-defined class, GameActivity.java: "public native void nativeCbWillDisplayVideo(String location);"
+extern "C" void Java_com_epicgames_ue4_GameActivity_nativeCbWillDisplayVideo(JNIEnv* jenv, jobject thiz, jstring locationString)
+{
+	const char* javaChars = jenv->GetStringUTFChars(locationString, 0);
+
+	FString Location = FString(UTF8_TO_TCHAR(javaChars));
+	//Release the string
+	jenv->ReleaseStringUTFChars(locationString, javaChars);
+
+	FSimpleDelegateGraphTask::CreateAndDispatchWhenReady(
+		FSimpleDelegateGraphTask::FDelegate::CreateLambda([=]() 
+		{
+			UChartboostComponent::WillDisplayVideoDelegate.Broadcast(Location);
+		}),
+		TStatId(),
+		nullptr,
+		ENamedThreads::GameThread
+	);
 }
 
-void AndroidThunkJava_Chartboost_ShowInterstitial()
+//This function is declared in the Java-defined class, GameActivity.java: "public native void nativeCbDidCloseRewardedVideo(String location);"
+extern "C" void Java_com_epicgames_ue4_GameActivity_nativeCbDidCloseRewardedVideo(JNIEnv* jenv, jobject thiz, jstring locationString)
 {
-	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-	{
-		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_Chartboost_ShowInterstitial", "()Ljava/lang/String;", false);
-		
-		FJavaWrapper::CallObjectMethod(Env, FJavaWrapper::GameActivityThis, Method);
-	}
+	const char* javaChars = jenv->GetStringUTFChars(locationString, 0);
+
+	FString Location = FString(UTF8_TO_TCHAR(javaChars));
+	//Release the string
+	jenv->ReleaseStringUTFChars(locationString, javaChars);
+
+	FSimpleDelegateGraphTask::CreateAndDispatchWhenReady(
+		FSimpleDelegateGraphTask::FDelegate::CreateLambda([=]()
+		{
+			UChartboostComponent::DidCloseRewardedVideoDelegate.Broadcast(Location);
+		}),
+		TStatId(),
+		nullptr,
+		ENamedThreads::GameThread
+	);
+}
+
+//This function is declared in the Java-defined class, GameActivity.java: "public native void nativeCbDidCompleteRewardedVideo(String location, int reward);"
+extern "C" void Java_com_epicgames_ue4_GameActivity_nativeCbDidCompleteRewardedVideo(JNIEnv* jenv, jobject thiz, jstring locationString, jint reward)
+{
+	const char* javaChars = jenv->GetStringUTFChars(locationString, 0);
+
+	FString Location = FString(UTF8_TO_TCHAR(javaChars));
+	//Release the string
+	jenv->ReleaseStringUTFChars(locationString, javaChars);
+
+	FSimpleDelegateGraphTask::CreateAndDispatchWhenReady(
+		FSimpleDelegateGraphTask::FDelegate::CreateLambda([=]()
+		{
+			UChartboostComponent::DidCompleteRewardedVideoDelegate.Broadcast(Location, reward);
+		}),
+		TStatId(),
+		nullptr,
+		ENamedThreads::GameThread
+	);
 }
 
 
@@ -58,30 +114,35 @@ void UChartboostFunctions::ChartboostStart(FString AppId, FString AppSignature)
 	// initialize iOS
 #if PLATFORM_IOS
 	
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [Chartboost startWithAppId:AppId.GetNSString()
-                      appSignature:AppSignature.GetNSString()
-                          delegate:CBDelegateSingleton];
-        
-        [Chartboost setAutoCacheAds:DefaultSettings->AutoCacheAds];
-        [Chartboost setShouldRequestInterstitialsInFirstSession:DefaultSettings->FirstSessionInterstitials];
-        [Chartboost setShouldDisplayLoadingViewForMoreApps:DefaultSettings->MoreAppsLoadingView];
-        [Chartboost setShouldPrefetchVideoContent:DefaultSettings->PrefetchVideoContent];
-        [Chartboost setShouldPauseClickForConfirmation:DefaultSettings->PauseForAgeGate];
-    });
+	 dispatch_async(dispatch_get_main_queue(), ^{
+		  [Chartboost startWithAppId:AppId.GetNSString()
+							 appSignature:AppSignature.GetNSString()
+								  delegate:CBDelegateSingleton];
+		  
+		  [Chartboost setAutoCacheAds:DefaultSettings->AutoCacheAds];
+		  [Chartboost setShouldRequestInterstitialsInFirstSession:DefaultSettings->FirstSessionInterstitials];
+		  [Chartboost setShouldDisplayLoadingViewForMoreApps:DefaultSettings->MoreAppsLoadingView];
+		  [Chartboost setShouldPrefetchVideoContent:DefaultSettings->PrefetchVideoContent];
+		  [Chartboost setShouldPauseClickForConfirmation:DefaultSettings->PauseForAgeGate];
+	 });
 	
 #elif PLATFORM_ANDROID
-    if (JNIEnv* env = FAndroidApplication::GetJavaEnv(true))
-    {
-        static jmethodID Method = FJavaWrapper::FindMethod(env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_Chartboost_startWithAppID", "()Z", false);
-        
-        //FJavaWrapper::CallVoidMethod(env, AppId,Method);
-        UE_LOG(LogAndroid, Warning, TEXT("I found the java method startWithAppID\n"))
-    }
-    else
-    {
-        UE_LOG(LogAndroid, Warning, TEXT("ERROR Could note get Java ENV\n"));
-    }
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv(true))
+	{
+		jstring AppIDArg = Env->NewStringUTF(TCHAR_TO_UTF8(*AppId));
+		jstring AppSignatureArg = Env->NewStringUTF(TCHAR_TO_UTF8(*AppSignature));
+
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, AndroidThunkJava_Chartboost_StartWithAppID, AppIDArg, AppSignatureArg);
+
+		Env->DeleteLocalRef(AppIDArg);
+		Env->DeleteLocalRef(AppSignatureArg);
+
+		UE_LOG(LogAndroid, Warning, TEXT("I found the java method startWithAppID\n"));
+	}
+	else
+	{
+		UE_LOG(LogAndroid, Warning, TEXT("ERROR Could note get Java ENV\n"));
+	}
 #endif
 }
 
@@ -210,6 +271,23 @@ bool UChartboostFunctions::ChartboostHasRewardedVideo(FString Location) {
 	
 #if PLATFORM_IOS
 	return [Chartboost hasRewardedVideo:Location.GetNSString()];
+#elif PLATFORM_ANDROID
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv(true))
+	{
+		jstring LocationArg = Env->NewStringUTF(TCHAR_TO_UTF8(*Location));
+
+		bool ret = FJavaWrapper::CallBooleanMethod(Env, FJavaWrapper::GameActivityThis, AndroidThunkJava_Chartboost_HasRewardedVideo, LocationArg);
+
+		Env->DeleteLocalRef(LocationArg);
+
+		UE_LOG(LogAndroid, Warning, TEXT("I found the java method ChartboostHasRewardedVideo\n"));
+
+		return ret;
+	}
+	else
+	{
+		UE_LOG(LogAndroid, Warning, TEXT("ERROR Could note get Java ENV\n"));
+	}
 #endif
 	
 	return false;
@@ -226,6 +304,21 @@ void UChartboostFunctions::ChartboostShowRewardedVideo(FString Location) {
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[Chartboost showRewardedVideo:Location.GetNSString()];
 	});
+#elif PLATFORM_ANDROID
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv(true))
+	{
+		jstring LocationArg = Env->NewStringUTF(TCHAR_TO_UTF8(*Location));
+
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, AndroidThunkJava_Chartboost_ShowRewardedVideo, LocationArg);
+
+		Env->DeleteLocalRef(LocationArg);
+
+		UE_LOG(LogAndroid, Warning, TEXT("I found the java method ChartboostShowRewardedVideo\n"));
+	}
+	else
+	{
+		UE_LOG(LogAndroid, Warning, TEXT("ERROR Could note get Java ENV\n"));
+	}
 #endif
 }
 
@@ -242,6 +335,21 @@ void UChartboostFunctions::ChartboostCacheRewardedVideo(FString Location) {
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[Chartboost cacheRewardedVideo:Location.GetNSString()];
 	});
+#elif PLATFORM_ANDROID
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv(true))
+	{
+		jstring LocationArg = Env->NewStringUTF(TCHAR_TO_UTF8(*Location));
+
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, AndroidThunkJava_Chartboost_CacheRewardedVideo, LocationArg);
+
+		Env->DeleteLocalRef(LocationArg);
+
+		UE_LOG(LogAndroid, Warning, TEXT("I found the java method ChartboostCacheRewardedVideo\n"));
+	}
+	else
+	{
+		UE_LOG(LogAndroid, Warning, TEXT("ERROR Could note get Java ENV\n"));
+	}
 #endif
 }
 

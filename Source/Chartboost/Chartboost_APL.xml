@@ -2,6 +2,7 @@
 <!--GearVR plugin additions-->
 <root xmlns:android="http://schemas.android.com/apk/res/android">
 	<!-- init section is always evaluated once per architecture -->
+	<trace enable="true"/>
 	<init>
 		<log text="Chartboost init"/>
 		<!-- currently only support armv7 -->
@@ -12,35 +13,6 @@
 
 		<!-- remove Oculus Signature Files by default -->
 <!-- 		<setBool result="bRemoveOSIG" value="true"/> -->
-		
-		<!-- get packaging for GearVR from ini and reset it if architecture not supported -->
-	<!-- 	<setBoolFromProperty result="bPackageForGearVR" ini="Engine" section="/Script/AndroidRuntimeSettings.AndroidRuntimeSettings" property="bPackageForGearVR" default="false"/>
-		<if condition="bPackageForGearVR">
-			<true>
-				<if condition="bSupported">
-					<true>
-						<if condition="Distribution">
-							<true>
-								<setBoolFromProperty result="bRemoveOSIG" ini="Engine" section="/Script/AndroidRuntimeSettings.AndroidRuntimeSettings" property="bRemoveOSIG" default="false"/>
-								<if condition="bRemoveOSIG">
-									<true>
-										<log text="GearVR entitlement checks are enabled"/>
-									</true>
-								</if>
-							</true>
-							<false>
-								<!-- if not using entitlement checks need to keep the osig files 
-								<setBool result="bRemoveOSIG" value="false"/>
-							</false>
-						</if>
-					</true>
-					<false>
-						<setBool result="bPackageForGearVR" value="false"/>
-						<log text="GearVR not supported for this architecture, disabled."/>
-					</false>
-				</if>
-			</true>
-		</if> -->
 		
 <!-- 		<if condition="bRemoveOSIG">
 			<true>
@@ -62,53 +34,8 @@
 		<!-- entitlements check if package GearVR for distribution and removing OSIGs -->
 <!-- 		<setBoolAnd result="bEntitlementCheck" arg1="$B(bRemoveOSIG)" arg2="$B(bGearDistribution)"/> -->
 	</init>
-
-	<!-- optional updates applied to AndroidManifest.xml -
-<!-- 	<androidManifestUpdates>
-		<if condition="bGearDistribution">
-			<true>
-				<!-- distribution builds only install internally -
-				<addAttribute tag="manifest" name="android:installLocation" value="internalOnly"/>
-
-				<!-- update the GameActivity activity 
-				<loopElements tag="activity">
-					<setStringFromAttribute result="activityName" tag="$" name="android:name"/>
-					<setBoolIsEqual result="bGameActivity" arg1="$S(activityName)" arg2="com.epicgames.ue4.GameActivity"/>
-					<if condition="bGameActivity">
-						<true>
-							<!-- do not want application to show in recents 
-							<addAttribute tag="$" name="android:excludeFromRecents" value="true"/>
-
-							<!-- distribution builds should not be launched from home screen so remove LAUNCHER 
-							<loopElements tag="category">
-								<setStringFromAttribute result="categoryName" tag="$" name="android:name"/>
-								<setBoolIsEqual result="bLauncher" arg1="$S(categoryName)" arg2="android.intent.category.LAUNCHER"/>
-								<if condition="bLauncher">
-									<true>
-										<removeElement tag="$"/>
-									</true>
-								</if>
-							</loopElements>
-
-							<!-- add INFO intent category instead 
-							<setElement result="intentInfo" value="category"/>
-							<addAttribute tag="$intentInfo" name="android:name" value="android.intent.category.INFO"/>
-							<addElement tag="intent-filter" name="intentInfo"/>
-						</true>
-					</if>
-				</loopElements>
-			</true>
-		</if>
- 		<if condition="bPackageForGearVR">
-			<true>
-				<addElements tag="application">
-					<meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>
-				</addElements>
-				<addPermission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-				<addFeature android:name="android.hardware.usb.host"/>
-			</true>
-		</if> 
-	</androidManifestUpdates> -->
+	
+	
 
 	<!-- optional additions to proguard -->
 	<proguardAdditions>
@@ -125,8 +52,8 @@
 	</proguardAdditions>
 	
 	<!-- optional files or directories to copy to Intermediate/Android/APK -->
- 	<resourceCopies>
-		<copyFile src="$S(EngineDir)/Plugins/GSG/Chartboost/lib/Android/chartboost.jar" dst="$S(BuildDir)/libs/chartboost.jar" />
+ 	<resourceCopies>		
+		<copyFile src="$S(PluginDir)/../../lib/Android/chartboost.jar" dst="$S(BuildDir)/libs/chartboost.jar" />
 <!--		<isArch arch="armeabi-v7a">
 			<copyFile src="$S(EngineDir)/Source/ThirdParty/Oculus/LibOVRMobile/LibOVRMobile_062/VrApi/Libs/Android/armeabi-v7a/libvrapi.so"
 						dst="$S(BuildDir)/libs/armeabi-v7a/libvrapi.so" />
@@ -160,31 +87,63 @@
 	<!-- optional additions to the GameActivity class in GameActivity.java -->
 	<gameActivityClassAdditions>
 		<insert>
-			public void AndroidThunkJava_Chartboost_StartWithAppID(String appId, String appSignature)
-			{
-				Chartboost.startWithAppId(this, appId, appSignature);
-				Chartboost.setDelegate(cbDelegate);
+		public native void nativeCbWillDisplayVideo(String location);
+		public native void nativeCbDidCloseRewardedVideo(String location);
+		public native void nativeCbDidCompleteRewardedVideo(String location, int reward);
+		
+		private ChartboostDelegate cbDelegate = new ChartboostDelegate() {
+		
+			// Implement to be notified of when a video will be displayed on the screen for 
+			// a given CBLocation. You can then do things like mute effects and sounds.
+			@Override
+			public void willDisplayVideo(String location) {
+				nativeCbWillDisplayVideo(location);
 			}
+			
+			// Called after a rewarded video has been closed.
+			@Override
+			public void didCloseRewardedVideo(String location) {
+				nativeCbDidCloseRewardedVideo(location);
+			}
+			
+			// Called after a rewarded video has been viewed completely and user is eligible for reward.
+			@Override
+			public void didCompleteRewardedVideo(String location, int reward) {
+				nativeCbDidCompleteRewardedVideo(location, reward);
+			}
+		};
+		
+		public void AndroidThunkJava_Chartboost_StartWithAppID(String appId, String appSignature)
+		{
+			Chartboost.startWithAppId(this, appId, appSignature);
+			Chartboost.setDelegate(cbDelegate);
+			Chartboost.onCreate(this);
+		}
 
-			public void AndroidThunkJava_Chartboost_CacheInterstitial(String location)
-			{
-				Chartboost.cacheInterstitial(CBLocation.LOCATION_DEFAULT);
-			}
+		public void AndroidThunkJava_Chartboost_CacheInterstitial(String location)
+		{
+			Chartboost.cacheInterstitial(CBLocation.LOCATION_DEFAULT);
+		}
 
-			public void AndroidThunkJava_Chartboost_ShowInterstitial(String location)
-			{
-				Chartboost.showInterstitial(CBLocation.LOCATION_DEFAULT);
-			}
+		public void AndroidThunkJava_Chartboost_ShowInterstitial(String location)
+		{
+			Chartboost.showInterstitial(CBLocation.LOCATION_DEFAULT);
+		}
 
-			public void AndroidThunkJava_Chartboost_CacheRewardedVideo(String location)
-			{
-				Chartboost.cacheRewardedVideo(CBLocation.LOCATION_DEFAULT);
-			}
+		public void AndroidThunkJava_Chartboost_CacheRewardedVideo(String location)
+		{
+			Chartboost.cacheRewardedVideo(CBLocation.LOCATION_DEFAULT);
+		}
 
-			public void AndroidThunkJava_Chartboost_ShowRewardedVideo(String location)
-			{
-				Chartboost.showRewardedVideo(CBLocation.LOCATION_DEFAULT);
-			}
+		public void AndroidThunkJava_Chartboost_ShowRewardedVideo(String location)
+		{
+			Chartboost.showRewardedVideo(CBLocation.LOCATION_DEFAULT);
+		}
+		
+		public boolean AndroidThunkJava_Chartboost_HasRewardedVideo(String location)
+		{
+			return Chartboost.hasRewardedVideo(CBLocation.LOCATION_DEFAULT);
+		}
 		</insert>
 	</gameActivityClassAdditions>
 	
@@ -206,7 +165,7 @@
 	<!-- optional additions to GameActivity onDestroy in GameActivity.java -->
 	<gameActivityOnDestroyAdditions>
 		<insert>
-			Chartboost.onDestroy(this);
+		Chartboost.onDestroy(this);
 		</insert>
 	</gameActivityOnDestroyAdditions>
 	
@@ -214,14 +173,14 @@
 	<!-- optional additions to GameActivity onStart in GameActivity.java -->
 	<gameActivityOnStartAdditions>
 		<insert>
-			Chartboost.onStart(this);
+		Chartboost.onStart(this);
 		</insert>
 	</gameActivityOnStartAdditions>
 
 	<!-- optional additions to GameActivity onStop in GameActivity.java -->
 	<gameActivityOnStopAdditions>
 		<insert>
-			Chartboost.onStop(this);
+		Chartboost.onStop(this);
 		</insert>
 	</gameActivityOnStopAdditions>
 	
@@ -229,7 +188,7 @@
 	<!-- optional additions to GameActivity onPause in GameActivity.java	-->
 	<gameActivityOnPauseAdditions>
 		<insert>
-			Chartboost.onPause(this);
+		Chartboost.onPause(this);
 		</insert>
 	</gameActivityOnPauseAdditions>
 
@@ -237,7 +196,7 @@
 	<!-- optional additions to GameActivity onResume in GameActivity.java	-->
 	<gameActivityOnResumeAdditions>
 		<insert>
-			Chartboost.onResume(this);
+		Chartboost.onResume(this);
 		</insert>
 	</gameActivityOnResumeAdditions>
 

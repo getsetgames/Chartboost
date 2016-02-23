@@ -30,6 +30,10 @@ void FChartboost::StartupModule()
 										 GetMutableDefault<UChartboostSettings>()
 										 );
 	}
+
+#if PLATFORM_ANDROID
+	UChartboostFunctions::InitJavaFunctions();
+#endif
 }
 
 

@@ -41,6 +41,11 @@ class UChartboostFunctions : public UObject {
 	GENERATED_BODY()
 	
 public:
+
+#if PLATFORM_ANDROID
+	static void InitJavaFunctions();
+#endif
+
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "chartboost ad advertising"), Category = "Chartboost")
 	static void ChartboostStart(FString AppId, FString AppSignature);
 	
