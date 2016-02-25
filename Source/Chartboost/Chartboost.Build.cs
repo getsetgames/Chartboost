@@ -36,8 +36,7 @@ namespace UnrealBuildTool.Rules
 
 			PrivateDependencyModuleNames.AddRange(
 				new string[]
-				{
-                    "Launch",
+				{                    
 					// ... add private dependencies that you statically link with here ...
 				}
 				);
@@ -51,9 +50,10 @@ namespace UnrealBuildTool.Rules
 				
 			PrivateIncludePathModuleNames.AddRange(
 			new string[] {
-				"Settings"
-			}
-			);
+				"Settings",
+                "Launch",
+            }
+            );
 
 
 			if (Target.Platform == UnrealTargetPlatform.IOS) {

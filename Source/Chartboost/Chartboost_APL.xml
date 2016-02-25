@@ -4,38 +4,35 @@
 	<!-- init section is always evaluated once per architecture -->
 	<trace enable="true"/>
 	<init>
-		<log text="Chartboost init"/>
-		<!-- currently only support armv7 -->
-		<!-- <setBool result="bSupported" value="false"/>
-		<isArch arch="armeabi-v7a">
-			<setBool result="bSupported" value="true"/>
-		</isArch> -->
-
-		<!-- remove Oculus Signature Files by default -->
-<!-- 		<setBool result="bRemoveOSIG" value="true"/> -->
-		
-<!-- 		<if condition="bRemoveOSIG">
-			<true>
-				<log text="Oculus Signature Files (osig) will be removed from APK"/>
-			</true>
-		</if> -->
-		
-		<!-- package for GearVR and for distribution -->
-<!-- 		<setBool result="bGearDistribution" value="false"/>
-		<if condition="bPackageForGearVR">
-			<true>
-				<isDistribution>
-					<setBool result="bGearDistribution" value="true"/>
-					<log text="Building with GearVR for distribution"/>
-				</isDistribution>
-			</true>
-		</if> -->
-		
-		<!-- entitlements check if package GearVR for distribution and removing OSIGs -->
-<!-- 		<setBoolAnd result="bEntitlementCheck" arg1="$B(bRemoveOSIG)" arg2="$B(bGearDistribution)"/> -->
+		<log text="Chartboost init"/>		
 	</init>
-	
-	
+
+  <androidManifestUpdates>
+    <addElements tag="application">
+      <activity android:name="com.chartboost.sdk.CBImpressionActivity" 
+                android:excludeFromRecents="true" 
+                android:hardwareAccelerated="true" 
+                android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" 
+                android:configChanges="keyboardHidden|orientation|screenSize" />
+      <meta-data android:name="com.epicgames.ue4.ChartBoost.AppId" android:value="56c75ef5f6cd4563a5fcfaef" />
+      <meta-data android:name="com.epicgames.ue4.ChartBoost.AppSignature" android:value="49f4383a0f62d808b6b6d3cd4c6cf0cc81b76e32" />
+    </addElements>
+
+    <!-- Read App ID from plugin project settings and add to the manifest -->  
+    <setStringFromProperty result="AppId" ini="Engine" section="/Script/Chartboost.ChartboostSettings" property="AppId" default=""/>
+    <setElement result="AppIdMetadata" value="meta-data"/>
+    <addAttribute tag="$AppIdMetadata" name="android:name" value="com.epicgames.ue4.ChartBoost.AppId"/>
+    <addAttribute tag="$AppIdMetadata" name="android:value" value="$S(AppId)"/>
+    <addElement tag="application" name="AppIdMetadata"/>
+
+    <!-- Read App ID from plugin project settings and add to the manifest -->
+    <setStringFromProperty result="AppSignature" ini="Engine" section="/Script/Chartboost.ChartboostSettings" property="AppSignature" default=""/>
+    <setElement result="AppSignatureMetadata" value="meta-data"/>
+    <addAttribute tag="$AppSignatureMetadata" name="android:name" value="com.epicgames.ue4.ChartBoost.AppSignature"/>
+    <addAttribute tag="$AppSignatureMetadata" name="android:value" value="$S(AppSignature)"/>
+    <addElement tag="application" name="AppSignatureMetadata"/>
+
+  </androidManifestUpdates>
 
 	<!-- optional additions to proguard -->
 	<proguardAdditions>

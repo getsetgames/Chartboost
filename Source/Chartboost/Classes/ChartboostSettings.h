@@ -16,6 +16,12 @@ public:
 	UChartboostSettings(const FObjectInitializer& ObjectInitializer);
 	
 	// General
+
+	UPROPERTY(Config, EditAnywhere, Category = App, meta = (DisplayName = "App Id"))
+	FString AppId;
+
+	UPROPERTY(Config, EditAnywhere, Category = App, meta = (DisplayName = "App Signature"))
+	FString AppSignature;
 	
 	UPROPERTY(Config, EditAnywhere, Category=General, meta=(DisplayName="Auto Cache Ads"))
 	bool AutoCacheAds;
