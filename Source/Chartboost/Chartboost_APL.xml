@@ -45,6 +45,7 @@
 } -->
 
 -keep class com.chartboost.** { *; }
+-dontwarn android.app.Activity
 		</insert>
 	</proguardAdditions>
 	
