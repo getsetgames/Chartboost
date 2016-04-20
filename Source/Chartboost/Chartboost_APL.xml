@@ -13,9 +13,7 @@
                 android:excludeFromRecents="true" 
                 android:hardwareAccelerated="true" 
                 android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" 
-                android:configChanges="keyboardHidden|orientation|screenSize" />
-      <meta-data android:name="com.epicgames.ue4.ChartBoost.AppId" android:value="56c75ef5f6cd4563a5fcfaef" />
-      <meta-data android:name="com.epicgames.ue4.ChartBoost.AppSignature" android:value="49f4383a0f62d808b6b6d3cd4c6cf0cc81b76e32" />
+                android:configChanges="keyboardHidden|orientation|screenSize" />      
     </addElements>
 
     <!-- Read App ID from plugin project settings and add to the manifest -->  
