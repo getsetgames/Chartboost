@@ -1,8 +1,9 @@
 # Chartboost
 A plugin for Unreal Engine 4 that integrates Chartboost's SDK and makes its functionality available in blueprints.
 
-- Supported platforms: iOS
+- Supported platforms: iOS, Android
 - iOS SDK Version: 5.5.0
+- Android SDK Version 6.0.2 *(see notes at the end of this document)*
 
 ## Setup
 
@@ -71,3 +72,10 @@ Click on the component and the available events will display in the blueprint De
 This allows you to respond to events such as when a rewarded video completes. This is where you can award the player their reward for watching the video.
 
 ![DidCompleteRewardedVideo](Resources/DidCompleteRewardedVideo.png)
+
+## Android notes
+
+- On Android, initialization is automatic due to SDK requirements. The Chartboost Start blueprint node is ignored.
+- **You must setup your Chartboost app key and app signature in Project Settings > Plugins > Chartboost in order for it to work!**
+- Right now only rewarded video is implemented (pull requests implementing the rest of the SDK are welcome).
+- It has only been tested as a project plugin, not as an engine-wide plugin.
