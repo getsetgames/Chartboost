@@ -119,28 +119,28 @@
 
 		public void AndroidThunkJava_Chartboost_CacheInterstitial(String location)
 		{
-			Chartboost.cacheInterstitial(CBLocation.LOCATION_DEFAULT);
+			Chartboost.cacheInterstitial(location);
 		}
 
 		public void AndroidThunkJava_Chartboost_ShowInterstitial(String location)
 		{
-			Chartboost.showInterstitial(CBLocation.LOCATION_DEFAULT);
+			Chartboost.showInterstitial(location);
 		}
 
 		public void AndroidThunkJava_Chartboost_CacheRewardedVideo(String location)
 		{
-			Chartboost.cacheRewardedVideo(CBLocation.LOCATION_DEFAULT);
+			Chartboost.cacheRewardedVideo(location);
 		}
 
 		public void AndroidThunkJava_Chartboost_ShowRewardedVideo(String location)
 		{
-			Chartboost.showRewardedVideo(CBLocation.LOCATION_DEFAULT);
+			Chartboost.showRewardedVideo(location);
 		}
 		
 		public boolean AndroidThunkJava_Chartboost_HasRewardedVideo(String location)
 		{
-			Log.debug( "AndroidThunkJava_Chartboost_HasRewardedVideo: " + Chartboost.hasRewardedVideo(CBLocation.LOCATION_DEFAULT) + " )" );			
-			return Chartboost.hasRewardedVideo(CBLocation.LOCATION_DEFAULT);
+			Log.debug( "AndroidThunkJava_Chartboost_HasRewardedVideo: " + Chartboost.hasRewardedVideo(location) + " )" );			
+			return Chartboost.hasRewardedVideo(location);
 		}
 		</insert>
 	</gameActivityClassAdditions>
