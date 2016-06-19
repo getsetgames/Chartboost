@@ -35,13 +35,6 @@
 	<!-- optional additions to proguard -->
 	<proguardAdditions>
 		<insert>
-<!-- -keep class com.oculus.** {
-   *;
-}
--keep class android.app.** {
-   *;
-} -->
-
 -keep class com.chartboost.** { *; }
 -dontwarn android.app.Activity
 		</insert>
@@ -50,19 +43,6 @@
 	<!-- optional files or directories to copy to Intermediate/Android/APK -->
  	<resourceCopies>		
 		<copyFile src="$S(PluginDir)/../../lib/Android/chartboost.jar" dst="$S(BuildDir)/libs/chartboost.jar" />
-<!--		<isArch arch="armeabi-v7a">
-			<copyFile src="$S(EngineDir)/Source/ThirdParty/Oculus/LibOVRMobile/LibOVRMobile_062/VrApi/Libs/Android/armeabi-v7a/libvrapi.so"
-						dst="$S(BuildDir)/libs/armeabi-v7a/libvrapi.so" />
-		</isArch>
-		<copyFile src="$S(EngineDir)/Source/ThirdParty/Oculus/LibOVRMobile/LibOVRMobile_062/VrApi/Libs/Android/VrApi.jar"
-					dst="$S(BuildDir)/libs/VrApi.jar" />
-		<copyFile src="$S(EngineDir)/Source/ThirdParty/Oculus/LibOVRMobile/LibOVRMobile_062/1stParty/VrPlatform/libs/vrplatlib.jar"
-					dst="$S(BuildDir)/libs/vrplatlib.jar" />
-		<if condition="bRemoveOSIG">
-			<true>
-				<deleteFiles filespec="assets/oculussig_*" />
-			</true>
-		</if>-->
 	</resourceCopies>
 
 	<!-- optional additions to the GameActivity imports in GameActivity.java -->
@@ -76,7 +56,7 @@
 			import com.chartboost.sdk.CBImpressionActivity;
 			import com.chartboost.sdk.Chartboost;
 			import com.chartboost.sdk.ChartboostDelegate;
-	</insert>
+		</insert>
 	</gameActivityImportAdditions>
 	
 
@@ -213,11 +193,6 @@
 
 	<!-- optional libraries to load in GameActivity.java before libUE4.so -->
 	<soLoadLibrary>
-		<!-- need this if plugin enabled and supported architecture, even if not packaged for GearVR -->
-	<!-- 	<if condition="bSupported">
-			<true>
-				<loadLibrary name="vrapi" failmsg="GearVR library not loaded and required!" />
-			</true>
-		</if> -->
+
 	</soLoadLibrary>
 </root>
