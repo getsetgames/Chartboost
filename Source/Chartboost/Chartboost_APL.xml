@@ -2,113 +2,35 @@
 <!--GearVR plugin additions-->
 <root xmlns:android="http://schemas.android.com/apk/res/android">
 	<!-- init section is always evaluated once per architecture -->
+	<trace enable="true"/>
 	<init>
-		<log text="Chartboost init"/>
-		<!-- currently only support armv7 -->
-		<!-- <setBool result="bSupported" value="false"/>
-		<isArch arch="armeabi-v7a">
-			<setBool result="bSupported" value="true"/>
-		</isArch> -->
-
-		<!-- remove Oculus Signature Files by default -->
-<!-- 		<setBool result="bRemoveOSIG" value="true"/> -->
-		
-		<!-- get packaging for GearVR from ini and reset it if architecture not supported -->
-	<!-- 	<setBoolFromProperty result="bPackageForGearVR" ini="Engine" section="/Script/AndroidRuntimeSettings.AndroidRuntimeSettings" property="bPackageForGearVR" default="false"/>
-		<if condition="bPackageForGearVR">
-			<true>
-				<if condition="bSupported">
-					<true>
-						<if condition="Distribution">
-							<true>
-								<setBoolFromProperty result="bRemoveOSIG" ini="Engine" section="/Script/AndroidRuntimeSettings.AndroidRuntimeSettings" property="bRemoveOSIG" default="false"/>
-								<if condition="bRemoveOSIG">
-									<true>
-										<log text="GearVR entitlement checks are enabled"/>
-									</true>
-								</if>
-							</true>
-							<false>
-								<!-- if not using entitlement checks need to keep the osig files 
-								<setBool result="bRemoveOSIG" value="false"/>
-							</false>
-						</if>
-					</true>
-					<false>
-						<setBool result="bPackageForGearVR" value="false"/>
-						<log text="GearVR not supported for this architecture, disabled."/>
-					</false>
-				</if>
-			</true>
-		</if> -->
-		
-<!-- 		<if condition="bRemoveOSIG">
-			<true>
-				<log text="Oculus Signature Files (osig) will be removed from APK"/>
-			</true>
-		</if> -->
-		
-		<!-- package for GearVR and for distribution -->
-<!-- 		<setBool result="bGearDistribution" value="false"/>
-		<if condition="bPackageForGearVR">
-			<true>
-				<isDistribution>
-					<setBool result="bGearDistribution" value="true"/>
-					<log text="Building with GearVR for distribution"/>
-				</isDistribution>
-			</true>
-		</if> -->
-		
-		<!-- entitlements check if package GearVR for distribution and removing OSIGs -->
-<!-- 		<setBoolAnd result="bEntitlementCheck" arg1="$B(bRemoveOSIG)" arg2="$B(bGearDistribution)"/> -->
+		<log text="Chartboost init"/>		
 	</init>
 
-	<!-- optional updates applied to AndroidManifest.xml -
-<!-- 	<androidManifestUpdates>
-		<if condition="bGearDistribution">
-			<true>
-				<!-- distribution builds only install internally -
-				<addAttribute tag="manifest" name="android:installLocation" value="internalOnly"/>
+  <androidManifestUpdates>
+    <addElements tag="application">
+      <activity android:name="com.chartboost.sdk.CBImpressionActivity" 
+                android:excludeFromRecents="true" 
+                android:hardwareAccelerated="true" 
+                android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" 
+                android:configChanges="keyboardHidden|orientation|screenSize" />      
+    </addElements>
 
-				<!-- update the GameActivity activity 
-				<loopElements tag="activity">
-					<setStringFromAttribute result="activityName" tag="$" name="android:name"/>
-					<setBoolIsEqual result="bGameActivity" arg1="$S(activityName)" arg2="com.epicgames.ue4.GameActivity"/>
-					<if condition="bGameActivity">
-						<true>
-							<!-- do not want application to show in recents 
-							<addAttribute tag="$" name="android:excludeFromRecents" value="true"/>
+    <!-- Read App ID from plugin project settings and add to the manifest -->  
+    <setStringFromProperty result="AppId" ini="Engine" section="/Script/Chartboost.ChartboostSettings" property="AppId" default=""/>
+    <setElement result="AppIdMetadata" value="meta-data"/>
+    <addAttribute tag="$AppIdMetadata" name="android:name" value="com.epicgames.ue4.ChartBoost.AppId"/>
+    <addAttribute tag="$AppIdMetadata" name="android:value" value="$S(AppId)"/>
+    <addElement tag="application" name="AppIdMetadata"/>
 
-							<!-- distribution builds should not be launched from home screen so remove LAUNCHER 
-							<loopElements tag="category">
-								<setStringFromAttribute result="categoryName" tag="$" name="android:name"/>
-								<setBoolIsEqual result="bLauncher" arg1="$S(categoryName)" arg2="android.intent.category.LAUNCHER"/>
-								<if condition="bLauncher">
-									<true>
-										<removeElement tag="$"/>
-									</true>
-								</if>
-							</loopElements>
+    <!-- Read App ID from plugin project settings and add to the manifest -->
+    <setStringFromProperty result="AppSignature" ini="Engine" section="/Script/Chartboost.ChartboostSettings" property="AppSignature" default=""/>
+    <setElement result="AppSignatureMetadata" value="meta-data"/>
+    <addAttribute tag="$AppSignatureMetadata" name="android:name" value="com.epicgames.ue4.ChartBoost.AppSignature"/>
+    <addAttribute tag="$AppSignatureMetadata" name="android:value" value="$S(AppSignature)"/>
+    <addElement tag="application" name="AppSignatureMetadata"/>
 
-							<!-- add INFO intent category instead 
-							<setElement result="intentInfo" value="category"/>
-							<addAttribute tag="$intentInfo" name="android:name" value="android.intent.category.INFO"/>
-							<addElement tag="intent-filter" name="intentInfo"/>
-						</true>
-					</if>
-				</loopElements>
-			</true>
-		</if>
- 		<if condition="bPackageForGearVR">
-			<true>
-				<addElements tag="application">
-					<meta-data android:name="com.samsung.android.vr.application.mode" android:value="vr_only"/>
-				</addElements>
-				<addPermission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-				<addFeature android:name="android.hardware.usb.host"/>
-			</true>
-		</if> 
-	</androidManifestUpdates> -->
+  </androidManifestUpdates>
 
 	<!-- optional additions to proguard -->
 	<proguardAdditions>
@@ -121,12 +43,13 @@
 } -->
 
 -keep class com.chartboost.** { *; }
+-dontwarn android.app.Activity
 		</insert>
 	</proguardAdditions>
 	
 	<!-- optional files or directories to copy to Intermediate/Android/APK -->
- 	<resourceCopies>
-		<copyFile src="$S(EngineDir)/Plugins/GSG/Chartboost/lib/Android/chartboost.jar" dst="$S(BuildDir)/libs/chartboost.jar" />
+ 	<resourceCopies>		
+		<copyFile src="$S(PluginDir)/../../lib/Android/chartboost.jar" dst="$S(BuildDir)/libs/chartboost.jar" />
 <!--		<isArch arch="armeabi-v7a">
 			<copyFile src="$S(EngineDir)/Source/ThirdParty/Oculus/LibOVRMobile/LibOVRMobile_062/VrApi/Libs/Android/armeabi-v7a/libvrapi.so"
 						dst="$S(BuildDir)/libs/armeabi-v7a/libvrapi.so" />
@@ -160,43 +83,84 @@
 	<!-- optional additions to the GameActivity class in GameActivity.java -->
 	<gameActivityClassAdditions>
 		<insert>
-			public void AndroidThunkJava_Chartboost_StartWithAppID(String appId, String appSignature)
-			{
-				Chartboost.startWithAppId(this, appId, appSignature);
-				Chartboost.setDelegate(cbDelegate);
+		public native void nativeCbWillDisplayVideo(String location);
+		public native void nativeCbDidCloseRewardedVideo(String location);
+		public native void nativeCbDidCompleteRewardedVideo(String location, int reward);
+		
+		private ChartboostDelegate cbDelegate = new ChartboostDelegate() {
+		
+			// Implement to be notified of when a video will be displayed on the screen for 
+			// a given CBLocation. You can then do things like mute effects and sounds.
+			@Override
+			public void willDisplayVideo(String location) {
+				Log.debug("willDisplayVideo");
+				nativeCbWillDisplayVideo(location);
 			}
+			
+			// Called after a rewarded video has been closed.
+			@Override
+			public void didCloseRewardedVideo(String location) {
+				Log.debug("didCloseRewardedVideo");
+				nativeCbDidCloseRewardedVideo(location);
+			}
+			
+			// Called after a rewarded video has been viewed completely and user is eligible for reward.
+			@Override
+			public void didCompleteRewardedVideo(String location, int reward) {
+				Log.debug("didCompleteRewardedVideo");
+				nativeCbDidCompleteRewardedVideo(location, reward);
+			}
+		};
+		
+		public void AndroidThunkJava_Chartboost_StartWithAppID(String appId, String appSignature)
+		{	
+			Log.debug( "AndroidThunkJava_Chartboost_StartWithAppID( " + appId + " " + appSignature + " )" );
+		}
 
-			public void AndroidThunkJava_Chartboost_CacheInterstitial(String location)
-			{
-				Chartboost.cacheInterstitial(CBLocation.LOCATION_DEFAULT);
-			}
+		public void AndroidThunkJava_Chartboost_CacheInterstitial(String location)
+		{
+			Chartboost.cacheInterstitial(location);
+		}
 
-			public void AndroidThunkJava_Chartboost_ShowInterstitial(String location)
-			{
-				Chartboost.showInterstitial(CBLocation.LOCATION_DEFAULT);
-			}
+		public void AndroidThunkJava_Chartboost_ShowInterstitial(String location)
+		{
+			Chartboost.showInterstitial(location);
+		}
 
-			public void AndroidThunkJava_Chartboost_CacheRewardedVideo(String location)
-			{
-				Chartboost.cacheRewardedVideo(CBLocation.LOCATION_DEFAULT);
-			}
+		public void AndroidThunkJava_Chartboost_CacheRewardedVideo(String location)
+		{
+			Chartboost.cacheRewardedVideo(location);
+		}
 
-			public void AndroidThunkJava_Chartboost_ShowRewardedVideo(String location)
-			{
-				Chartboost.showRewardedVideo(CBLocation.LOCATION_DEFAULT);
-			}
+		public void AndroidThunkJava_Chartboost_ShowRewardedVideo(String location)
+		{
+			Chartboost.showRewardedVideo(location);
+		}
+		
+		public boolean AndroidThunkJava_Chartboost_HasRewardedVideo(String location)
+		{
+			Log.debug( "AndroidThunkJava_Chartboost_HasRewardedVideo: " + Chartboost.hasRewardedVideo(location) + " )" );			
+			return Chartboost.hasRewardedVideo(location);
+		}
 		</insert>
 	</gameActivityClassAdditions>
 	
 	<!-- optional additions to GameActivity onCreate metadata reading in GameActivity.java -->
 	<gameActivityReadMetadataAdditions>
-<!-- 		<if condition="bSupported">
-			<true>
-				<insert>
-			
-				</insert>
-			</true>
-		</if> -->
+		<insert>		
+			if (bundle.containsKey("com.epicgames.ue4.ChartBoost.AppId") &amp;&amp; bundle.containsKey("com.epicgames.ue4.ChartBoost.AppSignature")) {
+				String appId = bundle.getString("com.epicgames.ue4.ChartBoost.AppId");
+				String appSignature = bundle.getString("com.epicgames.ue4.ChartBoost.AppSignature");
+				
+				Log.debug("Chartboost.startWithAppId(\"" + appId + "\", \"" + appSignature + "\")");
+				
+				Chartboost.startWithAppId(this, appId, appSignature);
+				Chartboost.setDelegate(cbDelegate);
+				Chartboost.onCreate(this);
+			} else {
+				Log.debug("Missing Chartboost App ID and/or App Signature on \"Extra settings for &lt;application&gt;\" in your project's Android settings. Example:\n &lt;meta-data android:name=\"com.epicgames.ue4.ChartBoost.AppId\" android:value=\"Your App Id\" /&gt;\\n&lt;meta-data android:name=\"com.epicgames.ue4.ChartBoost.AppSignature\" android:value=\"Your App Signature\" /&gt;");
+			}
+		</insert>
 	</gameActivityReadMetadataAdditions>
 	
 	<!-- optional additions to GameActivity onCreate in GameActivity.java -->
@@ -206,7 +170,7 @@
 	<!-- optional additions to GameActivity onDestroy in GameActivity.java -->
 	<gameActivityOnDestroyAdditions>
 		<insert>
-			Chartboost.onDestroy(this);
+		Chartboost.onDestroy(this);
 		</insert>
 	</gameActivityOnDestroyAdditions>
 	
@@ -214,14 +178,14 @@
 	<!-- optional additions to GameActivity onStart in GameActivity.java -->
 	<gameActivityOnStartAdditions>
 		<insert>
-			Chartboost.onStart(this);
+		Chartboost.onStart(this);
 		</insert>
 	</gameActivityOnStartAdditions>
 
 	<!-- optional additions to GameActivity onStop in GameActivity.java -->
 	<gameActivityOnStopAdditions>
 		<insert>
-			Chartboost.onStop(this);
+		Chartboost.onStop(this);
 		</insert>
 	</gameActivityOnStopAdditions>
 	
@@ -229,7 +193,7 @@
 	<!-- optional additions to GameActivity onPause in GameActivity.java	-->
 	<gameActivityOnPauseAdditions>
 		<insert>
-			Chartboost.onPause(this);
+		Chartboost.onPause(this);
 		</insert>
 	</gameActivityOnPauseAdditions>
 
@@ -237,7 +201,7 @@
 	<!-- optional additions to GameActivity onResume in GameActivity.java	-->
 	<gameActivityOnResumeAdditions>
 		<insert>
-			Chartboost.onResume(this);
+		Chartboost.onResume(this);
 		</insert>
 	</gameActivityOnResumeAdditions>
 
