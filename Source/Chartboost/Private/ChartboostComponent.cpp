@@ -3,6 +3,7 @@
 //  Copyright (c) 2015 Get Set Games Inc. All rights reserved.
 //
 
+#include "ChartboostComponent.h"
 #include "ChartboostPrivatePCH.h"
 
 void UChartboostComponent::OnRegister()
