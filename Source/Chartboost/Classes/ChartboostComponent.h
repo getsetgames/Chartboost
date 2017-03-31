@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "Components/ActorComponent.h"
 #include "ChartboostFunctions.h"
 #include "ChartboostComponent.generated.h"
 
