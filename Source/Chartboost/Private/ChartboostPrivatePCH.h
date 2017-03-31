@@ -5,9 +5,6 @@
 
 #pragma once
 
-#include "CoreUObject.h"
-#include "Engine.h"
-
 #if PLATFORM_IOS
 #import <Chartboost/Chartboost.h>
 #import <Chartboost/CBNewsfeed.h>
