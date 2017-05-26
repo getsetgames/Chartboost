@@ -7,7 +7,7 @@ namespace UnrealBuildTool.Rules
 {
 	public class Chartboost : ModuleRules
 	{
-		public Chartboost(TargetInfo Target)
+		public Chartboost(ReadOnlyTargetRules Target) : base(Target)
 		{
 			PublicIncludePaths.AddRange(
 				new string[] {
